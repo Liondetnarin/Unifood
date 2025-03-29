@@ -28,6 +28,9 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      <div className="text-4xl text-blue-500 font-bold p-4">
+      Tailwind CSS พร้อมใช้งานแล้ว!
+    </div>
     </>
   )
 }
