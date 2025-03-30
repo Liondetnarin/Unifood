@@ -55,10 +55,9 @@
         <header class="blog-header py-3">
             <div class="row flex-nowrap justify-content-between align-items-center">
                 <div class="col-4 pt-1">
-                    <a class="link-secondary" href="#">Subscribe</a>
                 </div>
                 <div class="col-4 text-center">
-                    <a class="blog-header-logo text-dark" href="#">Large</a>
+                    <a class="blog-header-logo text-dark" href="#">Unifood</a>
                 </div>
                 <div class="col-4 d-flex justify-content-end align-items-center">
                     <a class="link-secondary" href="#" aria-label="Search">
@@ -71,32 +70,25 @@
                         </svg>
                     </a>
                     <% if (loggetIn) { %>
-                    <a class="btn btn-sm btn-Signin mx-3" href="/logout">Logout</a>
-                    <% } %>
-
-                    <% if (!loggetIn) { %>
-                        <a class="btn btn-sm btn-Signin mx-3" href="/login">Sign In</a>
-                        <a class="btn btn-sm btn-Signup" href="/register">Sign Up</a>
+                        <a class="btn btn-sm btn-Signin mx-3" href="/logout">Logout</a>
                         <% } %>
-                
+
+                            <% if (!loggetIn) { %>
+                                <a class="btn btn-sm btn-Signin mx-3" href="/login">Sign In</a>
+                                <a class="btn btn-sm btn-Signup" href="/register">Sign Up</a>
+                                <% } %>
+
                 </div>
             </div>
         </header>
 
         <div class="nav-scroller py-1 mb-2">
             <nav class="nav d-flex justify-content-between">
-                <a class="p-2 link-secondary" href="#">World</a>
-                <a class="p-2 link-secondary" href="#">U.S.</a>
-                <a class="p-2 link-secondary" href="#">Technology</a>
-                <a class="p-2 link-secondary" href="#">Design</a>
-                <a class="p-2 link-secondary" href="#">Culture</a>
-                <a class="p-2 link-secondary" href="#">Business</a>
-                <a class="p-2 link-secondary" href="#">Politics</a>
-                <a class="p-2 link-secondary" href="#">Opinion</a>
-                <a class="p-2 link-secondary" href="#">Science</a>
-                <a class="p-2 link-secondary" href="#">Health</a>
-                <a class="p-2 link-secondary" href="#">Style</a>
-                <a class="p-2 link-secondary" href="#">Travel</a>
+                <a class="p-2 link-secondary" href="#">foryou</a>
+                <a class="p-2 link-secondary" href="#">Food</a>
+                <a class="p-2 link-secondary" href="#">Drink</a>
+                <a class="p-2 link-secondary" href="#">Coffe</a>
+                <a class="p-2 link-secondary" href="#">Dessert</a>
             </nav>
         </div>
     </div>
@@ -105,7 +97,7 @@
         <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
             <div class="col-md-6 px-0">
                 <h1 class="display-4 fst-italic">อย่าไปคงอย่าไปเครียด</h1>
-                <p class="lead mb-0"><a href="#" class="text-white fw-bold">ยินดีต้อนรับ <%= UserData.email %></a></p>
+                <p class="lead mb-0"><a href="#" class="text-white fw-bold">ยินดีต้อนรับ <%= UserData.name %></a></p>
             </div>
         </div>
 
@@ -114,12 +106,11 @@
                 <div
                     class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                     <div class="col p-4 d-flex flex-column position-static">
-                        <strong class="d-inline-block mb-2 text-primary">World</strong>
-                        <h3 class="mb-0">Featured post</h3>
-                        <div class="mb-1 text-muted">Nov 12</div>
-                        <p class="card-text mb-auto">This is a wider card with supporting text below as a natural
-                            lead-in to additional content.</p>
-                        <a href="#" class="stretched-link">Continue reading</a>
+                        <strong class="d-inline-block mb-2 text-primary">Food</strong>
+                        <h3 class="mb-0">ข้าวแกง</h3>
+                        <div class="mb-1 text-muted">ร้านอยู่ที่ตึก 25(ตึกโรงอาหาร)</div>
+                        <p class="card-text mb-auto">อร่อยและราคาถูกมากๆ.</p>
+                        <a href="#" class="stretched-link">อ่านเพิ่มเติม</a>
                     </div>
                     <div class="col-auto d-none d-lg-block">
                         <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg"
@@ -127,9 +118,8 @@
                             focusable="false">
                             <title>Placeholder</title>
                             <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
-                                dy=".3em">Thumbnail</text>
+                                dy=".3em">ข้าวราดแกง</text>
                         </svg>
-
                     </div>
                 </div>
             </div>
@@ -137,12 +127,11 @@
                 <div
                     class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                     <div class="col p-4 d-flex flex-column position-static">
-                        <strong class="d-inline-block mb-2 text-success">Design</strong>
-                        <h3 class="mb-0">Post title</h3>
-                        <div class="mb-1 text-muted">Nov 11</div>
-                        <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to
-                            additional content.</p>
-                        <a href="#" class="stretched-link">Continue reading</a>
+                        <strong class="d-inline-block mb-2 text-success">Food</strong>
+                        <h3 class="mb-0">ข้าวมันไก่</h3>
+                        <div class="mb-1 text-muted">ร้านอยู่ที่ตึก 25(ตึกโรงอาหาร)</div>
+                        <p class="mb-auto">ทีเด็ดอยู่ที่หมูก็อบ.</p>
+                        <a href="#" class="stretched-link">อ่านเพิ่มเติม</a>
                     </div>
                     <div class="col-auto d-none d-lg-block">
                         <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg"
@@ -150,9 +139,50 @@
                             focusable="false">
                             <title>Placeholder</title>
                             <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
-                                dy=".3em">Thumbnail</text>
+                                dy=".3em">ข้าวมันไก่</text>
                         </svg>
-
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div
+                    class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-success">Food</strong>
+                        <h3 class="mb-0">อาหารตามสั่ง</h3>
+                        <div class="mb-1 text-muted">ร้านอยู่ที่ตึก 25(ตึกโรงอาหาร)</div>
+                        <p class="mb-auto">ไม่รู้ไม่ค่อยได้กิน.</p>
+                        <a href="#" class="stretched-link">อ่านเพิ่มเติม</a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg"
+                            role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"
+                            focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
+                                dy=".3em">อาหารตามสั่ง</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div
+                    class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-primary">Food</strong>
+                        <h3 class="mb-0">คั่วไก่</h3>
+                        <div class="mb-1 text-muted">ร้านอยู่ที่ตึก 25(ตึกโรงอาหาร)</div>
+                        <p class="mb-auto">อร่อยแต่ทำช้าไปหน่อย.</p>
+                        <a href="#" class="stretched-link">อ่านเพิ่มเติม</a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg"
+                            role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"
+                            focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
+                                dy=".3em">คั่วไก่</text>
+                        </svg>
                     </div>
                 </div>
             </div>

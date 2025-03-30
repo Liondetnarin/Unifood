@@ -53,31 +53,38 @@
         <form action="/user/register" method="post">
             <h1 class="h3 mb-3 fw-normal">Sign Up</h1>
 
-            <% if(errors != null && errors.length > 0) { %>
-                <% for(let i = 0; i < errors.length; i++) { %>
-                        <p class="alert alert-danger">
-                            <%= errors[i] %>
-                        </p>
+            <% if(errors !=null && errors.length> 0) { %>
+                <% for(let i=0; i < errors.length; i++) { %>
+                    <p class="alert alert-danger">
+                        <%= errors[i] %>
+                    </p>
                     <% } %>
-            <% } %>
+                        <% } %>
 
-            <div class="form-floating">
-                <input type="email" name="email" value="<% email %>" class="form-control" id="floatingInput" placeholder="name@example.com">
-                <label for="floatingInput">Email address</label>
-            </div>
-            <div class="form-floating">
-                <input type="password" name="password" value="<% password %>" class="form-control" id="floatingPassword"
-                    placeholder="Password">
-                <label for="floatingPassword">Password</label>
-            </div>
 
-            <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" value="remember-me"> Remember me
-                </label>
-            </div>
-            <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
-            <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+                            <div class="form-floating">
+                                <input type="name" name="name" class=" form-control" id="floatingfirstname"
+                                    placeholder="Name">
+                                <label for="floatingname">Name</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="email" name="email" value="<% email %>" class="form-control"
+                                    id="floatingInput" placeholder="name@example.com">
+                                <label for="floatingInput">Email address</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="password" name="password" value="<% password %>" class="form-control"
+                                    id="floatingPassword" placeholder="Password">
+                                <label for="floatingPassword">Password</label>
+                            </div>
+
+                            <div class="checkbox mb-3">
+                                <label>
+                                    <input type="checkbox" value="remember-me"> Remember me
+                                </label>
+                            </div>
+                            <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+                            <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
         </form>
     </main>
 

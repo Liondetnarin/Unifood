@@ -33,7 +33,7 @@ app.use(expressSession({
     secret: "node secret"
 }))
 app.use("*", (req, res, next) => {
-    loggetIn = req.session.useraId
+    loggetIn = req.session.userId
     next()
 })
 app.set('view engine', 'ejs')
@@ -44,7 +44,7 @@ app.get('/login', redirectifAuth, loginController)
 app.get('/register', redirectifAuth, registerController)
 app.post('/user/register', redirectifAuth, storeUserController)
 app.post('/user/login', redirectifAuth, loginUserController)
-app.post('/logout', logoutController)
+app.get('/logout', logoutController)
 
 app.listen(4000, () => {
     console.log("App listening on port 4000")
