@@ -1,38 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import { Link } from 'react-router-dom'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [restaurants, setRestaurants] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/restaurants")
+      .then((res) => res.json())
+      .then((data) => setRestaurants(data))
+      .catch((err) => console.error("Error fetching:", err));
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <div className="text-4xl text-blue-500 font-bold p-4">
-      Tailwind CSS พร้อมใช้งานแล้ว!
+    <div className="px-4 py-6 max-w-7xl mx-auto">
+      <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-6 text-center">
+        ร้านอาหารภายในมหาวิทยาลัย
+      </h1>
+
+      {restaurants.length === 0 ? (
+        <p className="text-center text-gray-500">ไม่มีข้อมูลร้านอาหาร</p>
+      ) : (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {restaurants.map((r) => (
+            <div
+              key={r.id}
+              className="p-4 border rounded-xl shadow hover:shadow-lg transition duration-300 bg-white"
+            >
+              <h2 className="text-lg font-semibold mb-1">
+                <Link to={`/restaurant/${r.id}`} className="text-blue-600 hover:underline">
+                {r.name}
+                </Link>
+              </h2>
+
+              <p className="text-sm text-gray-600 mb-1">
+                {r.category} · {r.location}
+              </p>
+              <p className="text-sm mb-2">
+                ⭐ {r.averageRating} ({r.reviewsCount} รีวิว)
+              </p>
+              {r.imageUrl && (
+                <img
+                  src={r.imageUrl}
+                  alt={r.name}
+                  className="w-full h-40 object-cover rounded-lg"
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
-    </>
-  )
+  );
 }
 
-export default App
+export default App;
