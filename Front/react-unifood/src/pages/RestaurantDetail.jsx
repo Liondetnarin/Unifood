@@ -30,22 +30,22 @@ function RestaurantDetail() {
     if (user?.role === "admin") {
       confirmMessage = "คุณกำลังลบรีวิวในฐานะผู้ดูแลระบบ (admin) — แน่ใจหรือไม่?";
     }
-  
+
     const confirm = window.confirm(confirmMessage);
     if (!confirm) return;
-  
+
     try {
       const res = await fetch(`/api/reviews/${reviewId}`, {
         method: "DELETE",
       });
-  
+
       if (!res.ok) {
         alert("เกิดข้อผิดพลาดขณะลบ");
         return;
       }
-  
+
       alert("ลบรีวิวเรียบร้อยแล้ว");
-  
+
       const refreshed = await fetch(`/api/reviews/restaurant/${id}`);
       const data = await refreshed.json();
       setReviews(data);
@@ -65,7 +65,7 @@ function RestaurantDetail() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const reviewToSend = {
       ...newReview,
       restaurantId: id,
@@ -74,25 +74,25 @@ function RestaurantDetail() {
       createdAt: new Date().toISOString(),
       status: "approved",
     };
-  
+
     try {
       const res = await fetch("/api/reviews", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(reviewToSend),
       });
-  
+
       const text = await res.text(); // อ่าน response ไม่ว่าจะเป็น error หรือสำเร็จ
-  
+
       if (!res.ok) {
         alert(text); // ถ้าไม่ ok แสดง error จาก backend
         return;
       }
-  
+
       alert("รีวิวสำเร็จ!");
       setNewReview({ tasteRating: 5, cleanlinessRating: 5, speedRating: 5, valueRating: 5, comment: "" });
       setShowForm(false);
-  
+
       const refreshed = await fetch(`/api/reviews/restaurant/${id}`);
       const data = await refreshed.json();
       setReviews(data);
@@ -135,7 +135,7 @@ function RestaurantDetail() {
   if (!restaurant) return <div className="p-6">กำลังโหลดข้อมูลร้าน...</div>;
 
   return (
-    <div className="p-6 max-w-3xl mx-auto space-y-6">
+    <div className="h-screen scp-6 max-w-3xl mx-auto space-y-6">
       <h1 className="text-2xl font-bold">{restaurant.name}</h1>
       <p className="text-gray-600">{restaurant.category} · {restaurant.location}</p>
       {restaurant.imageUrl && (
@@ -163,7 +163,7 @@ function RestaurantDetail() {
         </form>
       )}
 
-      <div className="mt-6 border-t pt-4">
+      <div className="h-screen mt-6 border-t pt-4">
         <h3 className="text-lg font-semibold mb-2">รีวิวทั้งหมด</h3>
         {reviews.length === 0 ? (
           <p className="text-gray-500">ยังไม่มีรีวิว</p>
