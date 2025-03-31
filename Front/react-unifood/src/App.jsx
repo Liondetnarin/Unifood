@@ -37,7 +37,7 @@ function App() {
   }, []);
 
   return (
-    <div className="h-screen px-4 py-8 max-w-7xl mx-auto bg-gradient-to-b from-orange-400 via-orange-250 to-orange-100">
+    <div className="w-full min-h-screen px-4 py-8 mx-auto bg-gradient-to-b from-orange-500 via-orange-300 to-orange-100">
       <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-8 text-center">
         ร้านอาหารภายในมหาลัย
       </h1>
@@ -77,9 +77,21 @@ function App() {
           </button>
           <p className="text-sm text-gray-700 mt-2">Coffee</p>
         </div>
+
+        {user?.role === "admin" && (
+          <div className="text-right mb-4">
+            <Link to="/admin/add-restaurant">
+              <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                ➕ เพิ่มร้านอาหาร
+              </button>
+            </Link>
+          </div>
+        )}
+
       </div>
 
-      <p className="text-xl text-white-100 mt-2 h-[30px] font-bold">Recommeand For You</p>
+      <p className="text-xl sm:text-xl md:text-xl text-white-100 mt-2 h-[30px] font-bold ">Recommeand For You</p>
+
       <div className="sm:grid-cols-2 lg:grid-cols-3 flex gap-2">
         {restaurants.map((r) => {
           console.log("🖼️ imageUrl for", r.name, ":", r.imageUrl);
@@ -109,61 +121,54 @@ function App() {
         })}
       </div>
 
-      {user?.role === "admin" && (
-        <div className="text-right mb-4">
-          <Link to="/admin/add-restaurant">
-            <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-              ➕ เพิ่มร้านอาหาร
-            </button>
-          </Link>
-        </div>
-      )}
-
       {restaurants.length === 0 ? (
         <p className="text-center text-gray-500">ไม่มีข้อมูลร้านอาหาร</p>
       ) : (
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 ">
-          <p className="text-xl mt-2 h-[15px] text-center font-bold">Food</p>
-          {restaurants.map((r) => {
-            console.log("🖼️ imageUrl for", r.name, ":", r.imageUrl);
-            return (
-              <div key={r.id} className="p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white">
-                <h2 className="text-lg font-semibold mb-1">
-                  <Link to={`/restaurant/${r.id}`} className="text-blue-600 hover:underline">
-                    {r.name}
-                  </Link>
-                </h2>
+        <div className="grid gap-4sm:grid-cols-2 lg:grid-cols-3 ">
+          <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8">Food</p>
 
-                <p className="text-sm text-gray-600 mb-1">
-                  {r.category} · {r.location}
-                </p>
-                <p className="text-sm mb-2">
-                  ⭐ {r.averageRating} ({r.reviewsCount} รีวิว)
-                </p>
-                {r.imageUrl && (
-                  <img
-                    src={r.imageUrl}
-                    alt={r.name}
-                    className="w-full h-[250px] object-cover rounded-lg mb-4"
-                  />
-                )}
-                {user?.role === "admin" && (
-                  <div className="flex gap-2 mt-2">
-                    <Link to={`/admin/edit-restaurant/${r.id}`}>
-                      <button className="text-sm bg-yellow-500 text-white px-4 py-2 rounded-lg shadow hover:bg-yellow-600 transition-all duration-200">
-                        📝 แก้ไข</button>
+          <div className="w-full max-w-7xl grid gap-8 sm:grid-cols-2 lg:grid-cols-3 ">
+            {restaurants.map((r) => {
+              console.log("🖼️ imageUrl for", r.name, ":", r.imageUrl);
+              return (
+                <div key={r.id} className="p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white">
+                  <h2 className="text-lg font-semibold mb-1">
+                    <Link to={`/restaurant/${r.id}`} className="text-blue-600 hover:underline">
+                      {r.name}
                     </Link>
-                    <button onClick={() => handleDelete(r.id)} className="text-sm bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 transition-all duration-200">
-                      ❌ ลบ
-                    </button>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                  </h2>
 
-          <p className="text-xl text-white-100 mt-2 h-[30px] font-bold text-center">Dessert</p>
+                  <p className="text-sm text-gray-600 mb-1">
+                    {r.category} · {r.location}
+                  </p>
+                  <p className="text-sm mb-2">
+                    ⭐ {r.averageRating} ({r.reviewsCount} รีวิว)
+                  </p>
+                  {r.imageUrl && (
+                    <img
+                      src={r.imageUrl}
+                      alt={r.name}
+                      className="w-full h-[250px] object-cover rounded-lg mb-4"
+                    />
+                  )}
+                  {user?.role === "admin" && (
+                    <div className="flex gap-2 mt-2">
+                      <Link to={`/admin/edit-restaurant/${r.id}`}>
+                        <button className="text-sm bg-yellow-500 text-white px-4 py-2 rounded-lg shadow hover:bg-yellow-600 transition-all duration-200">
+                          📝 แก้ไข</button>
+                      </Link>
+                      <button onClick={() => handleDelete(r.id)} className="text-sm bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 transition-all duration-200">
+                        ❌ ลบ
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <p className="text-xl sm:text-xl md:text-xl mt-2 h-[15px] text-center font-bold">Drink</p>
           <div className="sm:grid-cols-2 lg:grid-cols-3 flex gap-2">
             {restaurants.map((r) => {
               console.log("🖼️ imageUrl for", r.name, ":", r.imageUrl);
@@ -193,37 +198,7 @@ function App() {
             })}
           </div>
 
-          <p className="text-xl text-white-100 mt-2 h-[30px] font-bold text-center">Drink</p>
-          <div className="sm:grid-cols-2 lg:grid-cols-3 flex gap-2">
-            {restaurants.map((r) => {
-              console.log("🖼️ imageUrl for", r.name, ":", r.imageUrl);
-              return (
-                <div key={r.id} className="p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white">
-                  <h2 className="text-lg font-semibold mb-1">
-                    <Link to={`/restaurant/${r.id}`} className="text-blue-600 hover:underline">
-                      {r.name}
-                    </Link>
-                  </h2>
-
-                  <p className="text-sm text-gray-600 mb-1">
-                    {r.category} · {r.location}
-                  </p>
-                  <p className="text-sm mb-2">
-                    ⭐ {r.averageRating} ({r.reviewsCount} รีวิว)
-                  </p>
-                  {r.imageUrl && (
-                    <img
-                      src={r.imageUrl}
-                      alt={r.name}
-                      className="w-full h-[250px] object-cover rounded-lg mb-4"
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          <p className="text-xl text-white-100 mt-2 h-[30px] font-bold text-center">Coffee</p>
+          <p className="text-xl sm:text-xl md:text-xl mt-2 h-[15px] text-center font-bold">Coffee</p>
           <div className="sm:grid-cols-2 lg:grid-cols-3 flex gap-2">
             {restaurants.map((r) => {
               console.log("🖼️ imageUrl for", r.name, ":", r.imageUrl);
