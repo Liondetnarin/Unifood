@@ -7,9 +7,8 @@ function RestaurantDetail() {
   const [restaurant, setRestaurant] = useState(null);
   const [reviews, setReviews] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
-  
+
   const [newReview, setNewReview] = useState({
-    
     tasteRating: 5,
     cleanlinessRating: 5,
     speedRating: 5,
@@ -17,16 +16,100 @@ function RestaurantDetail() {
     comment: "",
   });
 
-  const reviewToSend = {
-    ...newReview,
-    restaurantId: id,
-    userId: user?.id || "test-user",
-    userName: user?.name || "ไม่ระบุชื่อ",
-    createdAt: new Date().toISOString(),
-    status: "approved",
-  };  
+  const [editingReviewId, setEditingReviewId] = useState(null);
+  const [editReviewData, setEditReviewData] = useState({
+    tasteRating: 5,
+    cleanlinessRating: 5,
+    speedRating: 5,
+    valueRating: 5,
+    comment: "",
+  });
 
-  // โหลดข้อมูลร้าน
+  const handleChange = (e) => {
+    setNewReview({ ...newReview, [e.target.name]: e.target.value });
+  };
+
+  const handleEditChange = (e) => {
+    setEditReviewData({ ...editReviewData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    const reviewToSend = {
+      ...newReview,
+      restaurantId: id,
+      userId: user?.id || "unknown",
+      userName: user?.name || "ไม่ระบุชื่อ",
+      createdAt: new Date().toISOString(),
+      status: "approved",
+    };
+  
+    try {
+      const res = await fetch("/api/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(reviewToSend),
+      });
+  
+      const text = await res.text(); // อ่าน response ไม่ว่าจะเป็น error หรือสำเร็จ
+  
+      if (!res.ok) {
+        alert(text); // ถ้าไม่ ok แสดง error จาก backend
+        return;
+      }
+  
+      alert("รีวิวสำเร็จ!");
+      setNewReview({ tasteRating: 5, cleanlinessRating: 5, speedRating: 5, valueRating: 5, comment: "" });
+      setShowForm(false);
+  
+      const refreshed = await fetch(`/api/reviews/restaurant/${id}`);
+      const data = await refreshed.json();
+      setReviews(data);
+    } catch (err) {
+      console.error("Review Submit Error:", err);
+      alert("เกิดข้อผิดพลาดขณะส่งรีวิว");
+    }
+  };
+
+  const handleDeleteReview = async (reviewId) => {
+    const confirm = window.confirm("คุณต้องการลบรีวิวนี้หรือไม่?");
+    if (!confirm) return;
+
+    try {
+      await fetch(`/api/reviews/${reviewId}`, {
+        method: "DELETE",
+      });
+      alert("ลบรีวิวเรียบร้อยแล้ว");
+
+      const res = await fetch(`/api/reviews/restaurant/${id}`);
+      const data = await res.json();
+      setReviews(data);
+    } catch (err) {
+      console.error("ลบไม่สำเร็จ", err);
+    }
+  };
+
+  const handleUpdateReview = async (e, reviewId) => {
+    e.preventDefault();
+    try {
+      await fetch(`/api/reviews/${reviewId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editReviewData),
+      });
+
+      alert("แก้ไขรีวิวเรียบร้อยแล้ว");
+      setEditingReviewId(null);
+
+      const res = await fetch(`/api/reviews/restaurant/${id}`);
+      const data = await res.json();
+      setReviews(data);
+    } catch (err) {
+      console.error("แก้ไขไม่สำเร็จ", err);
+    }
+  };
+
   useEffect(() => {
     fetch(`/api/restaurants/${id}`)
       .then((res) => res.json())
@@ -37,51 +120,23 @@ function RestaurantDetail() {
       .then((data) => setReviews(data));
   }, [id]);
 
-  const handleChange = (e) => {
-    setNewReview({ ...newReview, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const reviewToSend = {
-      ...newReview,
-      restaurantId: id,
-      userId: user?.id || "unknown",
-      createdAt: new Date().toISOString(),
-      status: "approved",
-    };
-
-    fetch("/api/reviews", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(reviewToSend),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        alert("รีวิวสำเร็จ!");
-        setNewReview({ tasteRating: 5, cleanlinessRating: 5, speedRating: 5, valueRating: 5, comment: "" });
-         setShowForm(false);
-        return fetch(`/api/reviews/restaurant/${id}`);
-      })
-      .then((res) => res.json())
-      .then((data) => setReviews(data));
-  };
-
   if (!restaurant) return <div className="p-6">กำลังโหลดข้อมูลร้าน...</div>;
 
   return (
     <div className="p-6 max-w-3xl mx-auto space-y-6">
       <h1 className="text-2xl font-bold">{restaurant.name}</h1>
       <p className="text-gray-600">{restaurant.category} · {restaurant.location}</p>
-      {restaurant.imageUrl && <img src={restaurant.imageUrl} alt={restaurant.name} className="w-full rounded-lg" />}
+      {restaurant.imageUrl && (
+        <img src={restaurant.imageUrl} alt={restaurant.name} className="w-full rounded-lg" />
+      )}
 
-      <button onClick={() => setShowForm(!showForm)}
-        className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
-          {showForm ? "ยกเลิกรีวิว" : "รีวิวร้านนี้"}
+      <button
+        onClick={() => setShowForm(!showForm)}
+        className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+      >
+        {showForm ? "ยกเลิกรีวิว" : "รีวิวร้านนี้"}
       </button>
 
-      {/* ฟอร์มรีวิว */}
       {showForm && (
         <form onSubmit={handleSubmit} className="space-y-2 border-t pt-4 mt-4">
           <h2 className="text-xl font-semibold">เขียนรีวิว</h2>
@@ -94,9 +149,8 @@ function RestaurantDetail() {
           <textarea name="comment" value={newReview.comment} onChange={handleChange} className="w-full p-2 border rounded" placeholder="เขียนความคิดเห็น..." />
           <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">ส่งรีวิว</button>
         </form>
-)}
+      )}
 
-      {/* รีวิวทั้งหมด */}
       <div className="mt-6 border-t pt-4">
         <h3 className="text-lg font-semibold mb-2">รีวิวทั้งหมด</h3>
         {reviews.length === 0 ? (
@@ -105,13 +159,47 @@ function RestaurantDetail() {
           <ul className="space-y-4">
             {reviews.map((rev) => (
               <li key={rev.id} className="border p-3 rounded bg-white">
-                <p className="text-sm text-gray-600 font-semibold">
-                  รีวิวโดย: {rev.userName || "ไม่ระบุชื่อ"}
-                </p>
-                <p>
-                  ⭐ อร่อย: {rev.tasteRating}, สะอาด: {rev.cleanlinessRating}, เร็ว: {rev.speedRating}, คุ้ม: {rev.valueRating}
-                </p>
-                <p className="italic text-gray-700 mt-1">"{rev.comment}"</p>
+                {editingReviewId === rev.id ? (
+                  <form onSubmit={(e) => handleUpdateReview(e, rev.id)} className="space-y-2">
+                    <div className="grid grid-cols-2 gap-2">
+                      <input type="number" name="tasteRating" value={editReviewData.tasteRating} onChange={handleEditChange} min="1" max="5" className="p-2 border rounded" />
+                      <input type="number" name="cleanlinessRating" value={editReviewData.cleanlinessRating} onChange={handleEditChange} min="1" max="5" className="p-2 border rounded" />
+                      <input type="number" name="speedRating" value={editReviewData.speedRating} onChange={handleEditChange} min="1" max="5" className="p-2 border rounded" />
+                      <input type="number" name="valueRating" value={editReviewData.valueRating} onChange={handleEditChange} min="1" max="5" className="p-2 border rounded" />
+                    </div>
+                    <textarea name="comment" value={editReviewData.comment} onChange={handleEditChange} className="w-full p-2 border rounded" />
+                    <div className="flex gap-2">
+                      <button type="submit" className="bg-green-600 text-white px-4 py-1 rounded">บันทึก</button>
+                      <button type="button" className="bg-gray-500 text-white px-4 py-1 rounded" onClick={() => setEditingReviewId(null)}>ยกเลิก</button>
+                    </div>
+                  </form>
+                ) : (
+                  <>
+                    <p className="text-sm font-medium text-blue-700">รีวิวโดย: {rev.userName || "ไม่ระบุชื่อ"}</p>
+                    <p>⭐ อร่อย: {rev.tasteRating}, สะอาด: {rev.cleanlinessRating}, เร็ว: {rev.speedRating}, คุ้ม: {rev.valueRating}</p>
+                    <p className="italic text-gray-700 mt-1">"{rev.comment}"</p>
+                    {user && rev.userId === user.id && (
+                      <div className="text-right text-sm">
+                        <button
+                          className="text-blue-600 hover:underline mr-2"
+                          onClick={() => {
+                            setEditingReviewId(rev.id);
+                            setEditReviewData({
+                              tasteRating: rev.tasteRating,
+                              cleanlinessRating: rev.cleanlinessRating,
+                              speedRating: rev.speedRating,
+                              valueRating: rev.valueRating,
+                              comment: rev.comment
+                            });
+                          }}
+                        >
+                          แก้ไข
+                        </button>
+                        <button onClick={() => handleDeleteReview(rev.id)} className="text-red-600 hover:underline">ลบรีวิวนี้</button>
+                      </div>
+                    )}
+                  </>
+                )}
               </li>
             ))}
           </ul>

@@ -12,4 +12,6 @@ public interface ReviewRepository extends MongoRepository<Reviews, String> {
 
     // ดึงรีวิวทั้งหมดของผู้ใช้
     List<Reviews> findByUserId(String userId);
+
+    List<Reviews> findByRestaurantIdAndStatus(String restaurantId, String status);
 }
