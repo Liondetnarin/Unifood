@@ -7,6 +7,7 @@ function RestaurantDetail() {
   const [restaurant, setRestaurant] = useState(null);
   const [reviews, setReviews] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
+  const [editingReviewId, setEditingReviewId] = useState(null);
 
   const [newReview, setNewReview] = useState({
     tasteRating: 5,
@@ -16,7 +17,6 @@ function RestaurantDetail() {
     comment: "",
   });
 
-  const [editingReviewId, setEditingReviewId] = useState(null);
   const [editReviewData, setEditReviewData] = useState({
     tasteRating: 5,
     cleanlinessRating: 5,
@@ -24,6 +24,36 @@ function RestaurantDetail() {
     valueRating: 5,
     comment: "",
   });
+
+  const handleDeleteReview = async (reviewId) => {
+    let confirmMessage = "คุณต้องการลบรีวิวนี้หรือไม่?";
+    if (user?.role === "admin") {
+      confirmMessage = "คุณกำลังลบรีวิวในฐานะผู้ดูแลระบบ (admin) — แน่ใจหรือไม่?";
+    }
+  
+    const confirm = window.confirm(confirmMessage);
+    if (!confirm) return;
+  
+    try {
+      const res = await fetch(`/api/reviews/${reviewId}`, {
+        method: "DELETE",
+      });
+  
+      if (!res.ok) {
+        alert("เกิดข้อผิดพลาดขณะลบ");
+        return;
+      }
+  
+      alert("ลบรีวิวเรียบร้อยแล้ว");
+  
+      const refreshed = await fetch(`/api/reviews/restaurant/${id}`);
+      const data = await refreshed.json();
+      setReviews(data);
+    } catch (err) {
+      console.error("ลบไม่สำเร็จ", err);
+      alert("ลบไม่สำเร็จ");
+    }
+  };
 
   const handleChange = (e) => {
     setNewReview({ ...newReview, [e.target.name]: e.target.value });
@@ -69,24 +99,6 @@ function RestaurantDetail() {
     } catch (err) {
       console.error("Review Submit Error:", err);
       alert("เกิดข้อผิดพลาดขณะส่งรีวิว");
-    }
-  };
-
-  const handleDeleteReview = async (reviewId) => {
-    const confirm = window.confirm("คุณต้องการลบรีวิวนี้หรือไม่?");
-    if (!confirm) return;
-
-    try {
-      await fetch(`/api/reviews/${reviewId}`, {
-        method: "DELETE",
-      });
-      alert("ลบรีวิวเรียบร้อยแล้ว");
-
-      const res = await fetch(`/api/reviews/restaurant/${id}`);
-      const data = await res.json();
-      setReviews(data);
-    } catch (err) {
-      console.error("ลบไม่สำเร็จ", err);
     }
   };
 
@@ -178,26 +190,34 @@ function RestaurantDetail() {
                     <p className="text-sm font-medium text-blue-700">รีวิวโดย: {rev.userName || "ไม่ระบุชื่อ"}</p>
                     <p>⭐ อร่อย: {rev.tasteRating}, สะอาด: {rev.cleanlinessRating}, เร็ว: {rev.speedRating}, คุ้ม: {rev.valueRating}</p>
                     <p className="italic text-gray-700 mt-1">"{rev.comment}"</p>
-                    {user && rev.userId === user.id && (
+                    {user && (rev.userId === user.id || user.role === "admin") && (
                       <div className="text-right text-sm">
+                        {/*  เฉพาะเจ้าของรีวิวเท่านั้นที่แก้ได้ */}
+                        {rev.userId === user.id && (
+                          <button
+                            className="text-blue-600 hover:underline mr-2"
+                            onClick={() => {
+                              setEditingReviewId(rev.id);
+                              setEditReviewData({
+                                tasteRating: rev.tasteRating,
+                                cleanlinessRating: rev.cleanlinessRating,
+                                speedRating: rev.speedRating,
+                                valueRating: rev.valueRating,
+                                comment: rev.comment
+                              });
+                            }}
+                          >
+                            แก้ไข
+                          </button>
+                        )}
+
+                        {/* ทั้งเจ้าของรีวิว และ admin ลบได้ */}
                         <button
-                          className="text-blue-600 hover:underline mr-2"
-                          onClick={() => {
-                            setEditingReviewId(rev.id);
-                            setEditReviewData({
-                              tasteRating: rev.tasteRating,
-                              cleanlinessRating: rev.cleanlinessRating,
-                              speedRating: rev.speedRating,
-                              valueRating: rev.valueRating,
-                              comment: rev.comment
-                            });
-                          }}
-                        >
-                          แก้ไข
-                        </button>
-                        <button onClick={() => handleDeleteReview(rev.id)} className="text-red-600 hover:underline">ลบรีวิวนี้</button>
+                          onClick={() => handleDeleteReview(rev.id)}
+                          className="text-red-600 hover:underline">ลบรีวิวนี้</button>
                       </div>
                     )}
+
                   </>
                 )}
               </li>
