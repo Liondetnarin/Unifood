@@ -23,6 +23,7 @@ public class Reviews {
     private int speedRating;            // ความรวดเร็ว
     private int valueRating;            // ความคุ้มค่า
 
+    private String userName;            // ชื่อ
     private String comment;             // ข้อความรีวิว
     private LocalDateTime createdAt;    // เวลาที่โพสต์
     private String status;              // approved / rejected (เผื่อใช้คัดกรองคำหยาบ)

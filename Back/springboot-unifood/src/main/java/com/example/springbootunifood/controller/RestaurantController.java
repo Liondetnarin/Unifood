@@ -21,7 +21,16 @@ public class RestaurantController {
     // ดึงร้านอาหารทั้งหมด
     @GetMapping
     public List<Restaurants> getAllRestaurants() {
-        return restaurantRepository.findAll();
+        List<Restaurants> all = restaurantRepository.findAll();
+        all.forEach(r -> System.out.println("ok " + r.getName() + " - " + r.getImageUrl()));
+        return all;
+    }
+
+    // ดึงร้านอาหารเดี่ยวตาม ID
+    @GetMapping("/{id}")
+    public Restaurants getRestaurantById(@PathVariable String id) {
+        return restaurantRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ไม่พบร้านที่ต้องการ"));
     }
 
     // เพิ่มร้านอาหารใหม่
@@ -35,4 +44,11 @@ public class RestaurantController {
     public void deleteRestaurant(@PathVariable String id) {
         restaurantRepository.deleteById(id);
     }
+
+    @PutMapping("/{id}")
+    public Restaurants updateRestaurant(@PathVariable String id, @RequestBody Restaurants updated) {
+        updated.setId(id);
+        return restaurantRepository.save(updated);
+    }
+
 }
