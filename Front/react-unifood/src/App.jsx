@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation } from "swiper/modules";
 
 function App() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -37,72 +41,49 @@ function App() {
   }, []);
 
   return (
-    <div className="w-full min-h-screen px-4 py-8 mx-auto bg-gradient-to-b from-orange-500 via-orange-300 to-orange-100">
-      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-8 text-center">
+    <div className="min-h-screen w-full bg-gradient-to-b from-orange-400 to-orange-200 p-6">
+      <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
         ร้านอาหารภายในมหาลัย
       </h1>
 
       <div className="text-center mb-4 mx-auto space-x-2 flex justify-center gap-4">
-        <div className="flex flex-col items-center">
-          <button className="bg-orange-200 px-4 py-2 rounded hover:bg-orange-100 flex items-center justify-center">
-            ➕
-          </button>
-          <p className="text-sm text-gray-700 mt-2">Recommand</p>
+        <div className="flex flex-wrap justify-center gap-3 mb-6">
+          {["Recommend", "Food", "Dessert", "Drink", "Coffee"].map((category) => (
+            <button key={category} className="bg-orange-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-orange-600"
+              onClick={() => {
+                const section = document.getElementById(category.toLowerCase());
+                if (section) {
+                  section.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+            >
+              {category}
+            </button>
+          ))}
+          {user?.role === "admin" && (
+            <div className="text-right mb-4">
+              <Link to="/admin/add-restaurant">
+                <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                  ➕ เพิ่มร้านอาหาร
+                </button>
+              </Link>
+            </div>
+          )}
         </div>
-
-        <div className="flex flex-col items-center">
-          <button className="bg-orange-200 px-4 py-2 rounded hover:bg-orange-100 flex items-center justify-center">
-            ➕
-          </button>
-          <p className="text-sm text-gray-700 mt-2">Food</p>
-        </div>
-
-        <div className="flex flex-col items-center">
-          <button className="bg-orange-200 px-4 py-2 rounded hover:bg-orange-100 flex items-center justify-center">
-            ➕
-          </button>
-          <p className="text-sm text-gray-700 mt-2">Dessert</p>
-        </div>
-
-        <div className="flex flex-col items-center">
-          <button className="bg-orange-200 px-4 py-2 rounded hover:bg-orange-100 flex items-center justify-center">
-            ➕
-          </button>
-          <p className="text-sm text-gray-700 mt-2">Drink</p>
-        </div>
-
-        <div className="flex flex-col items-center">
-          <button className="bg-orange-200 px-4 py-2 rounded hover:bg-orange-100 flex items-center justify-center">
-            ➕
-          </button>
-          <p className="text-sm text-gray-700 mt-2">Coffee</p>
-        </div>
-
-        {user?.role === "admin" && (
-          <div className="text-right mb-4">
-            <Link to="/admin/add-restaurant">
-              <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                ➕ เพิ่มร้านอาหาร
-              </button>
-            </Link>
-          </div>
-        )}
-
       </div>
 
-      <p className="text-xl sm:text-xl md:text-xl text-white-100 mt-2 h-[30px] font-bold ">Recommeand For You</p>
-
-      <div className="sm:grid-cols-2 lg:grid-cols-3 flex gap-2">
-        {restaurants.map((r) => {
-          console.log("🖼️ imageUrl for", r.name, ":", r.imageUrl);
-          return (
+      <h2 id="Recommend For You" className="text-2xl font-semibold text-gray-700 mb-4">Recommend For You</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {restaurants
+          .sort(() => Math.random() - 0.5) // สุ่มเรียงลำดับ
+          .slice(0, 4) // เลือกมาแค่ 4 รายการ
+          .map((r) => (
             <div key={r.id} className="p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white">
               <h2 className="text-lg font-semibold mb-1">
                 <Link to={`/restaurant/${r.id}`} className="text-blue-600 hover:underline">
                   {r.name}
                 </Link>
               </h2>
-
               <p className="text-sm text-gray-600 mb-1">
                 {r.category} · {r.location}
               </p>
@@ -117,115 +98,141 @@ function App() {
                 />
               )}
             </div>
-          );
-        })}
+          ))}
       </div>
 
+
       {restaurants.length === 0 ? (
+
         <p className="text-center text-gray-500">ไม่มีข้อมูลร้านอาหาร</p>
       ) : (
 
-        <div className="grid gap-4sm:grid-cols-2 lg:grid-cols-3 ">
-          <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8">Food</p>
+        <div className="lg:grid-cols-3">
+          <p id="food" className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-4">Food</p>
 
-          <div className="w-full max-w-7xl grid gap-8 sm:grid-cols-2 lg:grid-cols-3 ">
-            {restaurants.map((r) => {
-              console.log("🖼️ imageUrl for", r.name, ":", r.imageUrl);
-              return (
-                <div key={r.id} className="p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white">
-                  <h2 className="text-lg font-semibold mb-1">
-                    <Link to={`/restaurant/${r.id}`} className="text-blue-600 hover:underline">
-                      {r.name}
-                    </Link>
-                  </h2>
-
-                  <p className="text-sm text-gray-600 mb-1">
-                    {r.category} · {r.location}
-                  </p>
-                  <p className="text-sm mb-2">
-                    ⭐ {r.averageRating} ({r.reviewsCount} รีวิว)
-                  </p>
-                  {r.imageUrl && (
-                    <img
-                      src={r.imageUrl}
-                      alt={r.name}
-                      className="w-full h-[250px] object-cover rounded-lg mb-4"
-                    />
-                  )}
-                  {user?.role === "admin" && (
-                    <div className="flex gap-2 mt-2">
-                      <Link to={`/admin/edit-restaurant/${r.id}`}>
-                        <button className="text-sm bg-yellow-500 text-white px-4 py-2 rounded-lg shadow hover:bg-yellow-600 transition-all duration-200">
-                          📝 แก้ไข</button>
-                      </Link>
-                      <button onClick={() => handleDelete(r.id)} className="text-sm bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 transition-all duration-200">
-                        ❌ ลบ
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {restaurants.map((r) => (
+              <div key={r.id} className="p-5 bg-white border rounded-xl shadow-lg hover:shadow-2xl transition duration-300">
+                <h2 className="text-lg font-semibold mb-1">
+                  <Link to={`/restaurant/${r.id}`} className="text-lg font-semibold text-blue-600 hover:underline">
+                    {r.name}
+                  </Link>
+                </h2>
+                <p className="text-sm text-gray-600">{r.category} · {r.location}</p>
+                <p className="text-sm mb-1">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
+                {r.imageUrl && (
+                  <img src={r.imageUrl} alt={r.name} className="w-full h-[200px] object-cover rounded-lg mb-3" />
+                )}
+                {user?.role === "admin" && (
+                  <div className="flex gap-2 mt-4">
+                    <Link to={`/admin/edit-restaurant/${r.id}`}>
+                      <button className="bg-yellow-400 text-white px-3 py-1 rounded-lg hover:bg-yellow-500 transition">
+                        📝 แก้ไข
                       </button>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                    </Link>
+                    <button onClick={() => handleDelete(r.id)} className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition">
+                      ❌ ลบ
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
 
-          <p className="text-xl sm:text-xl md:text-xl mt-2 h-[15px] text-center font-bold">Drink</p>
-          <div className="sm:grid-cols-2 lg:grid-cols-3 flex gap-2">
-            {restaurants.map((r) => {
-              console.log("🖼️ imageUrl for", r.name, ":", r.imageUrl);
-              return (
-                <div key={r.id} className="p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white">
-                  <h2 className="text-lg font-semibold mb-1">
-                    <Link to={`/restaurant/${r.id}`} className="text-blue-600 hover:underline">
-                      {r.name}
-                    </Link>
-                  </h2>
-
-                  <p className="text-sm text-gray-600 mb-1">
-                    {r.category} · {r.location}
-                  </p>
-                  <p className="text-sm mb-2">
-                    ⭐ {r.averageRating} ({r.reviewsCount} รีวิว)
-                  </p>
-                  {r.imageUrl && (
-                    <img
-                      src={r.imageUrl}
-                      alt={r.name}
-                      className="w-full h-[250px] object-cover rounded-lg mb-4"
-                    />
-                  )}
-                </div>
-              );
-            })}
+          <div className="max-w-6xl mx-auto">
+            <p id="dessert" className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6">Dessert</p>
+            <Swiper
+              modules={[Navigation]}
+              spaceBetween={20} //ระยะห่างระหว่างแต่ละรายการ
+              slidesPerView={1} //จำนวนรายการที่แสดง (ค่าเริ่มต้น)
+              navigation //ปุ่มลูกศร
+              breakpoints={{
+                640: { slidesPerView: 2 }, // หน้าจอเล็ก แสดง 2 รายการ
+                1024: { slidesPerView: 3 }, // หน้าจอใหญ่ แสดง 3 รายการ
+              }}
+              className="pb-8"
+            >
+              {restaurants.map((r) => (
+                <SwiperSlide key={r.id}>
+                  <div className="p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white">
+                    <h2 className="text-lg font-semibold mb-1">
+                      <Link to={`/restaurant/${r.id}`} className="text-blue-600 hover:underline">
+                        {r.name}
+                      </Link>
+                    </h2>
+                    <p className="text-sm text-gray-600 mb-1">{r.category} · {r.location}</p>
+                    <p className="text-sm mb-2">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
+                    {r.imageUrl && (
+                      <img src={r.imageUrl} alt={r.name} className="w-full h-[250px] object-cover rounded-lg mb-4" />
+                    )}
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
 
-          <p className="text-xl sm:text-xl md:text-xl mt-2 h-[15px] text-center font-bold">Coffee</p>
-          <div className="sm:grid-cols-2 lg:grid-cols-3 flex gap-2">
-            {restaurants.map((r) => {
-              console.log("🖼️ imageUrl for", r.name, ":", r.imageUrl);
-              return (
-                <div key={r.id} className="p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white">
-                  <h2 className="text-lg font-semibold mb-1">
-                    <Link to={`/restaurant/${r.id}`} className="text-blue-600 hover:underline">
-                      {r.name}
-                    </Link>
-                  </h2>
+          <div className="max-w-6xl mx-auto">
+            <p id="drink" className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6">Drink</p>
+            <Swiper
+              modules={[Navigation]}
+              spaceBetween={20}
+              slidesPerView={1}
+              navigation
+              breakpoints={{
+                640: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+              }}
+              className="pb-8"
+            >
+              {restaurants.map((r) => (
+                <SwiperSlide key={r.id}>
+                  <div className="p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white">
+                    <h2 className="text-lg font-semibold mb-1">
+                      <Link to={`/restaurant/${r.id}`} className="text-blue-600 hover:underline">
+                        {r.name}
+                      </Link>
+                    </h2>
+                    <p className="text-sm text-gray-600 mb-1">{r.category} · {r.location}</p>
+                    <p className="text-sm mb-2">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
+                    {r.imageUrl && (
+                      <img src={r.imageUrl} alt={r.name} className="w-full h-[250px] object-cover rounded-lg mb-4" />
+                    )}
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
 
-                  <p className="text-sm text-gray-600 mb-1">
-                    {r.category} · {r.location}
-                  </p>
-                  <p className="text-sm mb-2">
-                    ⭐ {r.averageRating} ({r.reviewsCount} รีวิว)
-                  </p>
-                  {r.imageUrl && (
-                    <img
-                      src={r.imageUrl}
-                      alt={r.name}
-                      className="w-full h-[250px] object-cover rounded-lg mb-4"
-                    />
-                  )}
-                </div>
-              );
-            })}
+          <div className="max-w-6xl mx-auto">
+            <p id="coffee" className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6">Coffee</p>
+            <Swiper
+              modules={[Navigation]}
+              spaceBetween={20}
+              slidesPerView={1}
+              navigation
+              breakpoints={{
+                640: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+              }}
+              className="pb-8"
+            >
+              {restaurants.map((r) => (
+                <SwiperSlide key={r.id}>
+                  <div className="p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white">
+                    <h2 className="text-lg font-semibold mb-1">
+                      <Link to={`/restaurant/${r.id}`} className="text-blue-600 hover:underline">
+                        {r.name}
+                      </Link>
+                    </h2>
+                    <p className="text-sm text-gray-600 mb-1">{r.category} · {r.location}</p>
+                    <p className="text-sm mb-2">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
+                    {r.imageUrl && (
+                      <img src={r.imageUrl} alt={r.name} className="w-full h-[250px] object-cover rounded-lg mb-4" />
+                    )}
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
 
         </div>

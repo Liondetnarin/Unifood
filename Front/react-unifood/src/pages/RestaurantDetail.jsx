@@ -135,33 +135,38 @@ function RestaurantDetail() {
   if (!restaurant) return <div className="p-6">กำลังโหลดข้อมูลร้าน...</div>;
 
   return (
-    <div className="h-screen scp-6 max-w-3xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold">{restaurant.name}</h1>
-      <p className="text-gray-600">{restaurant.category} · {restaurant.location}</p>
-      {restaurant.imageUrl && (
-        <img src={restaurant.imageUrl} alt={restaurant.name} className="w-full rounded-lg" />
-      )}
+    <div className="h-screen w-screen bg-gradient-to-b from-orange-400 to-orange-200 p-6 overflow-auto">
+      <h1 className="text-2xl font-bold text-center" > {restaurant.name}</h1 >
+      <p p className="text-gray-600" > {restaurant.category} · {restaurant.location}</p >
+      {
+        restaurant.imageUrl && (
+          <img src={restaurant.imageUrl} alt={restaurant.name} className="w-full rounded-lg" />
+        )
+      }
 
-      <button
-        onClick={() => setShowForm(!showForm)}
+      <button button
+        onClick={() => setShowForm(!showForm)
+        }
         className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
       >
         {showForm ? "ยกเลิกรีวิว" : "รีวิวร้านนี้"}
-      </button>
+      </button >
 
-      {showForm && (
-        <form onSubmit={handleSubmit} className="space-y-2 border-t pt-4 mt-4">
-          <h2 className="text-xl font-semibold">เขียนรีวิว</h2>
-          <div className="grid grid-cols-2 gap-2">
-            <input type="number" name="tasteRating" value={newReview.tasteRating} onChange={handleChange} min="1" max="5" className="p-2 border rounded" placeholder="ความอร่อย (1-5)" />
-            <input type="number" name="cleanlinessRating" value={newReview.cleanlinessRating} onChange={handleChange} min="1" max="5" className="p-2 border rounded" placeholder="ความสะอาด (1-5)" />
-            <input type="number" name="speedRating" value={newReview.speedRating} onChange={handleChange} min="1" max="5" className="p-2 border rounded" placeholder="ความเร็ว (1-5)" />
-            <input type="number" name="valueRating" value={newReview.valueRating} onChange={handleChange} min="1" max="5" className="p-2 border rounded" placeholder="ความคุ้มค่า (1-5)" />
-          </div>
-          <textarea name="comment" value={newReview.comment} onChange={handleChange} className="w-full p-2 border rounded" placeholder="เขียนความคิดเห็น..." />
-          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">ส่งรีวิว</button>
-        </form>
-      )}
+      {
+        showForm && (
+          <form onSubmit={handleSubmit} className="space-y-2 border-t pt-4 mt-4">
+            <h2 className="text-xl font-semibold">เขียนรีวิว</h2>
+            <div className="grid grid-cols-2 gap-2">
+              <input type="number" name="tasteRating" value={newReview.tasteRating} onChange={handleChange} min="1" max="5" className="p-2 border rounded" placeholder="ความอร่อย (1-5)" />
+              <input type="number" name="cleanlinessRating" value={newReview.cleanlinessRating} onChange={handleChange} min="1" max="5" className="p-2 border rounded" placeholder="ความสะอาด (1-5)" />
+              <input type="number" name="speedRating" value={newReview.speedRating} onChange={handleChange} min="1" max="5" className="p-2 border rounded" placeholder="ความเร็ว (1-5)" />
+              <input type="number" name="valueRating" value={newReview.valueRating} onChange={handleChange} min="1" max="5" className="p-2 border rounded" placeholder="ความคุ้มค่า (1-5)" />
+            </div>
+            <textarea name="comment" value={newReview.comment} onChange={handleChange} className="w-full p-2 border rounded" placeholder="เขียนความคิดเห็น..." />
+            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">ส่งรีวิว</button>
+          </form>
+        )
+      }
 
       <div className="h-screen mt-6 border-t pt-4">
         <h3 className="text-lg font-semibold mb-2">รีวิวทั้งหมด</h3>
@@ -225,7 +230,7 @@ function RestaurantDetail() {
           </ul>
         )}
       </div>
-    </div>
+    </div >
   );
 }
 
