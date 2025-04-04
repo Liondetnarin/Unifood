@@ -44,10 +44,28 @@ function App() {
 
     <div className="min-h-screen w-full bg-gradient-to-b from-orange-400 to-orange-200 p-6">
 
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex items-center mb-6 mx-auto space-x-2">
         <Link to="/login">
           <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
             Login
+          </button>
+        </Link>
+
+        <Link to="/admin/reviews">
+          <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            admin/review
+          </button>
+        </Link>
+
+        <Link to="/admin/restaurants">
+          <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            admin/restaurants
+          </button>
+        </Link>
+
+        <Link to="/admin/edit-restaurant/:id">
+          <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            admin/edit-restaurant/:id
           </button>
         </Link>
       </div>
@@ -79,7 +97,7 @@ function App() {
             <div className="text-right mb-4">
               <Link to="/admin/add-restaurant">
                 <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                  ➕ เพิ่มร้านอาหาร
+                  เพิ่มร้านอาหาร
                 </button>
               </Link>
             </div>
