@@ -41,25 +41,40 @@ function App() {
   }, []);
 
   return (
+
     <div className="min-h-screen w-full bg-gradient-to-b from-orange-400 to-orange-200 p-6">
+
+      <div className="flex justify-between items-center mb-6">
+        <Link to="/login">
+          <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            Login
+          </button>
+        </Link>
+      </div>
+      
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
-        ร้านอาหารภายในมหาลัย
+        UniFood
       </h1>
 
       <div className="text-center mb-4 mx-auto space-x-2 flex justify-center gap-4">
+        
         <div className="flex flex-wrap justify-center gap-3 mb-6">
+
           {["Recommend", "Food", "Dessert", "Drink", "Coffee"].map((category) => (
             <button key={category} className="bg-orange-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-orange-600"
+
               onClick={() => {
                 const section = document.getElementById(category.toLowerCase());
                 if (section) {
                   section.scrollIntoView({ behavior: "smooth" });
                 }
               }}
-            >
-              {category}
+            >{category}
+              
             </button>
+              
           ))}
+
           {user?.role === "admin" && (
             <div className="text-right mb-4">
               <Link to="/admin/add-restaurant">
