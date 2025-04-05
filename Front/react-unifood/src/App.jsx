@@ -69,13 +69,13 @@ function App() {
           </button>
         </Link>
       </div>
-      
+
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
         UniFood
       </h1>
 
       <div className="text-center mb-4 mx-auto space-x-2 flex justify-center gap-4">
-        
+
         <div className="flex flex-wrap justify-center gap-3 mb-6">
 
           {["Recommend", "Food", "Dessert", "Drink", "Coffee"].map((category) => (
@@ -88,9 +88,9 @@ function App() {
                 }
               }}
             >{category}
-              
+
             </button>
-              
+
           ))}
 
           {user?.role === "admin" && (
@@ -144,32 +144,33 @@ function App() {
           <p id="food" className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-4">Food</p>
 
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {restaurants.map((r) => (
-              <div key={r.id} className="p-5 bg-white border rounded-xl shadow-lg hover:shadow-2xl transition duration-300">
-                <h2 className="text-lg font-semibold mb-1">
-                  <Link to={`/restaurant/${r.id}`} className="text-lg font-semibold text-blue-600 hover:underline">
-                    {r.name}
-                  </Link>
-                </h2>
-                <p className="text-sm text-gray-600">{r.category} · {r.location}</p>
-                <p className="text-sm mb-1">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
-                {r.imageUrl && (
-                  <img src={r.imageUrl} alt={r.name} className="w-full h-[200px] object-cover rounded-lg mb-3" />
-                )}
-                {user?.role === "admin" && (
-                  <div className="flex gap-2 mt-4">
-                    <Link to={`/admin/edit-restaurant/${r.id}`}>
-                      <button className="bg-yellow-400 text-white px-3 py-1 rounded-lg hover:bg-yellow-500 transition">
-                        📝 แก้ไข
-                      </button>
+            {restaurants.filter((r) => r.category === "Food") //กรองเฉพาะหมวด food
+              .map((r) => (
+                <div key={r.id} className="p-5 bg-white border rounded-xl shadow-lg hover:shadow-2xl transition duration-300">
+                  <h2 className="text-lg font-semibold mb-1">
+                    <Link to={`/restaurant/${r.id}`} className="text-lg font-semibold text-blue-600 hover:underline">
+                      {r.name}
                     </Link>
-                    <button onClick={() => handleDelete(r.id)} className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition">
-                      ❌ ลบ
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
+                  </h2>
+                  <p className="text-sm text-gray-600">{r.category} · {r.location}</p>
+                  <p className="text-sm mb-1">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
+                  {r.imageUrl && (
+                    <img src={r.imageUrl} alt={r.name} className="w-full h-[200px] object-cover rounded-lg mb-3" />
+                  )}
+                  {user?.role === "admin" && (
+                    <div className="flex gap-2 mt-4">
+                      <Link to={`/admin/edit-restaurant/${r.id}`}>
+                        <button className="bg-yellow-400 text-white px-3 py-1 rounded-lg hover:bg-yellow-500 transition">
+                          📝 แก้ไข
+                        </button>
+                      </Link>
+                      <button onClick={() => handleDelete(r.id)} className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition">
+                        ❌ ลบ
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
           </div>
 
           <div className="max-w-6xl mx-auto">
@@ -185,22 +186,36 @@ function App() {
               }}
               className="pb-8"
             >
-              {restaurants.map((r) => (
-                <SwiperSlide key={r.id}>
-                  <div className="p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white">
-                    <h2 className="text-lg font-semibold mb-1">
-                      <Link to={`/restaurant/${r.id}`} className="text-blue-600 hover:underline">
-                        {r.name}
-                      </Link>
-                    </h2>
-                    <p className="text-sm text-gray-600 mb-1">{r.category} · {r.location}</p>
-                    <p className="text-sm mb-2">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
-                    {r.imageUrl && (
-                      <img src={r.imageUrl} alt={r.name} className="w-full h-[250px] object-cover rounded-lg mb-4" />
+              {restaurants
+                .filter((r) => r.category === "Dessert") //กรองเฉพาะหมวด Dessert
+                .map((r) => (
+                  <SwiperSlide key={r.id}>
+                    <div className="p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white">
+                      <h2 className="text-lg font-semibold mb-1">
+                        <Link to={`/restaurant/${r.id}`} className="text-blue-600 hover:underline">
+                          {r.name}
+                        </Link>
+                      </h2>
+                      <p className="text-sm text-gray-600 mb-1">{r.category} · {r.location}</p>
+                      <p className="text-sm mb-2">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
+                      {r.imageUrl && (
+                        <img src={r.imageUrl} alt={r.name} className="w-full h-[250px] object-cover rounded-lg mb-4" />
+                      )}
+                    </div>
+                    {user?.role === "admin" && (
+                      <div className="flex gap-2 mt-4">
+                        <Link to={`/admin/edit-restaurant/${r.id}`}>
+                          <button className="bg-yellow-400 text-white px-3 py-1 rounded-lg hover:bg-yellow-500 transition">
+                            📝 แก้ไข
+                          </button>
+                        </Link>
+                        <button onClick={() => handleDelete(r.id)} className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition">
+                          ❌ ลบ
+                        </button>
+                      </div>
                     )}
-                  </div>
-                </SwiperSlide>
-              ))}
+                  </SwiperSlide>
+                ))}
             </Swiper>
           </div>
 
@@ -217,22 +232,36 @@ function App() {
               }}
               className="pb-8"
             >
-              {restaurants.map((r) => (
-                <SwiperSlide key={r.id}>
-                  <div className="p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white">
-                    <h2 className="text-lg font-semibold mb-1">
-                      <Link to={`/restaurant/${r.id}`} className="text-blue-600 hover:underline">
-                        {r.name}
-                      </Link>
-                    </h2>
-                    <p className="text-sm text-gray-600 mb-1">{r.category} · {r.location}</p>
-                    <p className="text-sm mb-2">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
-                    {r.imageUrl && (
-                      <img src={r.imageUrl} alt={r.name} className="w-full h-[250px] object-cover rounded-lg mb-4" />
+              {restaurants
+                .filter((r) => r.category === "Drink") //กรองเฉพาะหมวด Drink
+                .map((r) => (
+                  <SwiperSlide key={r.id}>
+                    <div className="p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white">
+                      <h2 className="text-lg font-semibold mb-1">
+                        <Link to={`/restaurant/${r.id}`} className="text-blue-600 hover:underline">
+                          {r.name}
+                        </Link>
+                      </h2>
+                      <p className="text-sm text-gray-600 mb-1">{r.category} · {r.location}</p>
+                      <p className="text-sm mb-2">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
+                      {r.imageUrl && (
+                        <img src={r.imageUrl} alt={r.name} className="w-full h-[250px] object-cover rounded-lg mb-4" />
+                      )}
+                    </div>
+                    {user?.role === "admin" && (
+                      <div className="flex gap-2 mt-4">
+                        <Link to={`/admin/edit-restaurant/${r.id}`}>
+                          <button className="bg-yellow-400 text-white px-3 py-1 rounded-lg hover:bg-yellow-500 transition">
+                            📝 แก้ไข
+                          </button>
+                        </Link>
+                        <button onClick={() => handleDelete(r.id)} className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition">
+                          ❌ ลบ
+                        </button>
+                      </div>
                     )}
-                  </div>
-                </SwiperSlide>
-              ))}
+                  </SwiperSlide>
+                ))}
             </Swiper>
           </div>
 
@@ -249,22 +278,36 @@ function App() {
               }}
               className="pb-8"
             >
-              {restaurants.map((r) => (
-                <SwiperSlide key={r.id}>
-                  <div className="p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white">
-                    <h2 className="text-lg font-semibold mb-1">
-                      <Link to={`/restaurant/${r.id}`} className="text-blue-600 hover:underline">
-                        {r.name}
-                      </Link>
-                    </h2>
-                    <p className="text-sm text-gray-600 mb-1">{r.category} · {r.location}</p>
-                    <p className="text-sm mb-2">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
-                    {r.imageUrl && (
-                      <img src={r.imageUrl} alt={r.name} className="w-full h-[250px] object-cover rounded-lg mb-4" />
+              {restaurants
+                .filter((r) => r.category === "Coffee") //กรองเฉพาะหมวด Coffee
+                .map((r) => (
+                  <SwiperSlide key={r.id}>
+                    <div className="p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white">
+                      <h2 className="text-lg font-semibold mb-1">
+                        <Link to={`/restaurant/${r.id}`} className="text-blue-600 hover:underline">
+                          {r.name}
+                        </Link>
+                      </h2>
+                      <p className="text-sm text-gray-600 mb-1">{r.category} · {r.location}</p>
+                      <p className="text-sm mb-2">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
+                      {r.imageUrl && (
+                        <img src={r.imageUrl} alt={r.name} className="w-full h-[250px] object-cover rounded-lg mb-4" />
+                      )}
+                    </div>
+                    {user?.role === "admin" && (
+                      <div className="flex gap-2 mt-4">
+                        <Link to={`/admin/edit-restaurant/${r.id}`}>
+                          <button className="bg-yellow-400 text-white px-3 py-1 rounded-lg hover:bg-yellow-500 transition">
+                            📝 แก้ไข
+                          </button>
+                        </Link>
+                        <button onClick={() => handleDelete(r.id)} className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition">
+                          ❌ ลบ
+                        </button>
+                      </div>
                     )}
-                  </div>
-                </SwiperSlide>
-              ))}
+                  </SwiperSlide>
+                ))}
             </Swiper>
           </div>
 

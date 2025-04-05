@@ -17,11 +17,11 @@ function AdminRestaurantForm() {
   };
 
   // ฟังก์ชันสำหรับส่งข้อมูลร้านอาหารไปยัง API
-  // ใช้ fetch API เพื่อส่งข้อมูลไปยังเซิร์ฟเวอร์
+  // ใมูลไปยังเซิร์ฟเช้ fetch API เพื่อส่งข้อวอร์
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch("/api/restaurants", { 
+    fetch("/api/restaurants", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(restaurant),
@@ -43,7 +43,7 @@ function AdminRestaurantForm() {
   const handleClear = () => {
     setRestaurant({ name: "", category: "", location: "", imageUrl: "" });
   };
-  
+
   const handleCancel = (e) => {
     e.preventDefault();
     navigate("/"); // กลับไปยังหน้าหลักหรือหน้าที่ต้องการ
@@ -88,7 +88,7 @@ function AdminRestaurantForm() {
           <option value="Drink">Drink</option>
           <option value="Cafe">Cafe</option>
         </select> */}
-        
+
         <input
           type="text"
           name="location"
@@ -98,7 +98,7 @@ function AdminRestaurantForm() {
           className="w-full p-2 border rounded"
           required
         />
-        
+
         <input
           type="text"
           name="imageUrl"
@@ -112,7 +112,7 @@ function AdminRestaurantForm() {
           <button
             type="submit"
             className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-            >
+          >
             บันทึก
           </button>
 
@@ -120,7 +120,7 @@ function AdminRestaurantForm() {
             type="reset"
             onClick={handleClear}
             className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
-            >
+          >
             ล้างข้อมูล
           </button>
         </div>
@@ -134,7 +134,7 @@ function AdminRestaurantForm() {
         </button>
       </form>
     </div>
-    
+
   );
 }
 
