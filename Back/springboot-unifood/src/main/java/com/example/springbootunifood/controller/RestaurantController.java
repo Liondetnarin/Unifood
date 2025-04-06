@@ -107,10 +107,15 @@ public class RestaurantController {
         }
     }
 
-
     // ลบร้านอาหารตาม ID
     @DeleteMapping("/{id}")
     public void deleteRestaurant(@PathVariable String id) {
         restaurantRepository.deleteById(id);
     }
+
+    @GetMapping("/search")
+    public List<Restaurants> searchRestaurants(@RequestParam("keyword") String keyword) {
+        return restaurantRepository.findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCase(keyword, keyword);
+    }
+
 }

@@ -24,6 +24,19 @@ function App() {
   const isAdmin = user?.role === "admin"; // ตรวจสอบว่าผู้ใช้เป็น admin หรือไม่
   const [restaurants, setRestaurants] = useState([]); // สร้าง state สำหรับร้านอาหาร
   const [visibleCount, setVisibleCount] = useState(4); // เริ่มแสดง 4 ร้านอาหาร
+  const [searchText, setSearchText] = useState(""); // สร้าง state สำหรับการค้นหา
+
+  // สร้าง state สำหรับการค้นหา
+  const handleSearch = (e) => {
+    e.preventDefault();
+  
+    fetch(`http://localhost:8080/api/restaurants/search?query=${searchText}`)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("🔍 ผลลัพธ์ที่ค้นหา:", data);
+      setRestaurants(data);
+    })
+  };
 
   // ฟังก์ชันสำหรับแสดงหมวดหมู่ร้านอาหารใน Swiper
   const renderSwiperSection = (category, displayName) => {
@@ -221,8 +234,25 @@ function App() {
             <Link to="/">
               <span className="text-4xl font-bold text-blue-700">Uni</span>
               <span className="text-4xl font-bold text-red-600">Food</span>
-            </Link>
+            </Link> 
 
+            </div>
+
+            <div className="flex items-center space-x-4">
+
+            <form onSubmit={handleSearch} className="flex items-center space-x-2 mb-6">
+              <input
+                type="text"
+                placeholder="กินอะไรดี..."
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+              <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-bold">
+                ค้นหา
+              </button>
+            </form>
+              
             </div>
 
             <div className="flex gap-4 justify-center items-center flex-wrap">
