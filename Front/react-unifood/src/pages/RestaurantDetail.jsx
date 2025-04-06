@@ -138,11 +138,14 @@ function RestaurantDetail() {
     <div className="h-screen w-screen bg-gradient-to-b from-orange-400 to-orange-200 p-6 overflow-auto">
       <h1 className="text-2xl font-bold text-center" > {restaurant.name}</h1 >
       <p p className="text-gray-600" > {restaurant.category} · {restaurant.location}</p >
-      {
-        restaurant.imageUrl && (
-          <img src={restaurant.imageUrl} alt={restaurant.name} className="w-full rounded-lg" />
-        )
-      }
+      
+      {restaurant.image && (
+        <img
+          src={`http://localhost:8080${restaurant.image}`}
+          alt={restaurant.name}
+          className=""
+        />
+      )}
 
       <button button
         onClick={() => setShowForm(!showForm)

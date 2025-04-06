@@ -17,5 +17,5 @@ public class Restaurants {
     private String location;
     private double averageRating;
     private int reviewsCount;
-    private String imageUrl;
+    private String image;
 }

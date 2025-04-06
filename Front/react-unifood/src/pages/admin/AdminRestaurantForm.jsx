@@ -8,40 +8,54 @@ function AdminRestaurantForm() {
     name: "",
     category: "",
     location: "",
-    imageUrl: "",
   });
 
-  // ฟังก์ชันสำหรับจัดการการเปลี่ยนแปลงข้อมูลในฟอร์ม
+  // ใช้เก็บไฟล์รูปภาพ
+  const [imageFile, setImageFile] = useState(null);
+
   const handleChange = (e) => {
     setRestaurant({ ...restaurant, [e.target.name]: e.target.value });
   };
 
-  // ฟังก์ชันสำหรับส่งข้อมูลร้านอาหารไปยัง API
-  // ใมูลไปยังเซิร์ฟเช้ fetch API เพื่อส่งข้อวอร์
+  const handleFileChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const data = new FormData();
+    data.append("name", restaurant.name);
+    data.append("category", restaurant.category);
+    data.append("location", restaurant.location);
+    if (imageFile) {
+      data.append("image", imageFile); // แนบไฟล์รูปภาพ
+    }
+
     fetch("/api/restaurants", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(restaurant),
+      body: data,
     })
       .then((res) => res.json())
       .then(() => {
+
         alert("เพิ่มร้านสำเร็จ!");
-        setRestaurant({ name: "", category: "", location: "", imageUrl: "" });
-        // navigate("/admin/restaurants"); // เปลี่ยนเส้นทางไปยังหน้ารายการร้านอาหารหลังจากเพิ่มสำเร็จ
+        setRestaurant({ name: "", category: "", location: "" });
+        setImageFile(null);
+
         navigate("/"); // เปลี่ยนเส้นทางไปยังหน้ารายการร้านอาหารหลังจากเพิ่มสำเร็จ
       })
+
       .catch((err) => {
         console.error("❌ Error:", err);
         alert("เกิดข้อผิดพลาด");
+
       });
   };
 
   // ฟังก์ชันสำหรับล้างข้อมูลในฟอร์ม
   const handleClear = () => {
-    setRestaurant({ name: "", category: "", location: "", imageUrl: "" });
+    setRestaurant({ name: "", category: "", location: "" });
   };
 
   const handleCancel = (e) => {
@@ -100,13 +114,20 @@ function AdminRestaurantForm() {
         />
 
         <input
-          type="text"
-          name="imageUrl"
-          placeholder="ลิงก์รูปภาพ"
-          value={restaurant.imageUrl}
-          onChange={handleChange}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
           className="w-full p-2 border rounded"
+          required
         />
+
+        {imageFile && (
+          <img
+            src={URL.createObjectURL(imageFile)}
+            alt="Preview"
+            className="w-full h-[250px] object-cover rounded-xl"
+          />
+        )}
 
         <div className="flex justify-between mt-4">
           <button
