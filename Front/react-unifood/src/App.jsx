@@ -29,31 +29,43 @@ function App() {
   const renderSwiperSection = (category, displayName) => {
     const filtered = restaurants.filter((r) => r.category === category);
     const count = filtered.length;
-    if (count === 0) return null;
+
+    if (filtered.length === 0) {
+      return (
+        <div className="max-w-6xl mx-auto">
+          <p id={category.toLowerCase()} className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6">
+            {displayName}
+          </p>
+          <p className="text-center text-gray-500 mb-8">
+            ไม่มีข้อมูลร้านอาหารในหมวด {displayName}
+          </p>
+        </div>
+      );
+    }
   
     return (
+      
       <div className="max-w-6xl mx-auto">
-        <p id={category.toLowerCase()} className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6">{displayName}</p>
+        <p id={category.toLowerCase()} className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8">{displayName}</p>
   
         <div className="mb-6">
-          {count >= 3 ? (
+          {count >= 1 ? (
             <Swiper
               modules={[Navigation]}
               spaceBetween={20}
               navigation
-              className="pb-8"
+              className=""
+              centeredSlides={filtered.length === 1}
               breakpoints={{
-                640: { slidesPerView: 1 },
-                740: { slidesPerView: 2 },
+                640: { slidesPerView: 2 },
                 1024: { slidesPerView: 3 },
               }}
             >
               {filtered.map((r) => (
-                <SwiperSlide>
+                <SwiperSlide key={r.id}>
                   <div
-                  key={r.id}
                   onClick={() => navigate(`/restaurant/${r.id}`)}
-                  className="cursor-pointer p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white"
+                  className="mx-auto cursor-pointer p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white mb-8"
                   >
                     {r.image && (
                       <img
@@ -128,8 +140,8 @@ function App() {
     );
   };
 
-  // ฟังก์ชันสำหรับแสดงเพิ่มร้านอาหาร
-  const renderAdminButtons_Add = (id) => {
+  // ฟังก์ชันสำหรับเพิ่มร้านอาหาร
+  const AdminButtons_Add = (id) => {
     if (!isAdmin) return null;
   
     return (
@@ -139,6 +151,36 @@ function App() {
       
       <button className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700">
         เพิ่มร้านอาหาร
+      </button>
+    </div>
+  )};
+
+  // ฟังก์ชันสำหรับดูรีวิวที่รออนุมัติ
+  const AdminButtons_Riview = (id) => {
+    if (!isAdmin) return null;
+  
+    return (
+    <div
+    onClick={() => navigate("/admin/reviews")}
+    className="flex justify-center">
+      
+      <button className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700">
+        รีวิวที่รออนุมัติ
+      </button>
+    </div>
+  )};
+
+  // ฟังก์ชันสำหรับดูรีวิวที่รออนุมัติ
+  const AdminButtons_RestaurantList = (id) => {
+    if (!isAdmin) return null;
+  
+    return (
+    <div
+    onClick={() => navigate("/admin/rastaurants")}
+    className="flex justify-center">
+      
+      <button className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700">
+        รายการร้านอาหาร
       </button>
     </div>
   )};
@@ -167,46 +209,48 @@ function App() {
 
   return (
 
-    <div className="min-h-screen w-full bg-gradient-to-b from-orange-400 to-orange-200 p-6">
+    <div className="min-h-screen w-full bg-gray-200 p-6">
 
-      <div className="flex items-center mb-6 mx-auto space-x-2">
+      <div>
+        <nav className="bg-yellow-400 shadow-md p-4 mb-6 rounded-lg">
+          
+          <div className="flex justify-between items-center max-w-8xl mx-auto">
 
-        <Link to="/login">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-            Login
-          </button>
-        </Link>
+            <div className="flex space-x-4 items-center">
 
-        <Link to="/admin/reviews">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-            admin/review
-          </button>
-        </Link>
+            <Link to="/">
+              <span className="text-4xl font-bold text-blue-700">Uni</span>
+              <span className="text-4xl font-bold text-red-600">Food</span>
+            </Link>
 
-        <Link to="/admin/restaurants">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-            admin/restaurants
-          </button>
-        </Link>
+            </div>
 
-        <Link to="/admin/edit-restaurant/:id">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-            admin/edit-restaurant/:id
-          </button>
-        </Link>
+            <div className="flex gap-4 justify-center items-center flex-wrap">
 
+            {isAdmin && AdminButtons_Riview()}
+
+            {isAdmin && AdminButtons_RestaurantList()}
+
+              <Link to="/login">
+                <button className="text-gray-700 hover:text-blue-600">Log in</button>
+              </Link>
+
+              <Link to="/signup">
+                <button className="text-gray-700 hover:text-blue-600">Sign up</button>
+              </Link>
+
+            </div>
+
+          </div>
+        </nav>
       </div>
-      
-      <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
-        UniFood
-      </h1>
 
-      <div className="text-center mb-4 mx-auto space-x-2 flex justify-center gap-4">
+      <div className="max-w-6xl mx-auto mb-8">
 
         <div className="flex gap-4 mb-4 justify-center items-center flex-wrap">
 
           {["Recommend", "Food", "Dessert", "Drink", "Coffee"].map((category) => (
-            <button key={category} className="bg-orange-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-orange-600"
+            <button key={category} className="bg-yellow-400 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-500"
 
               onClick={() => {
                 const section = document.getElementById(category.toLowerCase());
@@ -219,47 +263,60 @@ function App() {
 
           ))}
 
-          {isAdmin && renderAdminButtons_Add()}
+          {isAdmin && AdminButtons_Add()}
         
         </div>
       </div>
 
-      <h2 id="Recommend For You" className="text-2xl font-semibold text-gray-700 mb-6">Recommend For You</h2>
+      {restaurants.length === 0 ? (
+
+      <p className="text-center text-gray-500">ไม่มีข้อมูลร้านอาหาร</p>
+      ) : (
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-
-        {restaurants
-          .sort(() => Math.random() - 0.5) // สุ่มเรียงลำดับ
-          .slice(0, 4) // เลือกมาแค่ 4 รายการ
-          .map((r) => (
+        <div className="max-w-6xl mx-auto">
+            
+          <h2 id="Recommend For You" className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6">Recommend For You</h2>
           
-          <div
-            onClick={() => navigate(`/restaurant/${r.id}`)}
-            className="cursor-pointer p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white"
-          >
-            {r.image && (
-              <img
-                src={`http://localhost:8080${r.image}`}
-                alt={r.name}
-                className="w-full h-[250px] object-cover rounded-xl mb-4"
-              />
-            )}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
 
-            <h2 className="text-lg font-semibold mb-1">{r.name}</h2>
-            <p className="text-sm text-gray-600 mb-1">{r.category} · {r.location}</p>
-            <p className="text-sm mb-2">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
+            {restaurants
+              .sort(() => Math.random() - 0.5) // สุ่มเรียงลำดับ
+              .slice(0, 4) // เลือกมาแค่ 4 รายการ
+              .map((r) => (
+              
+              <div
+              key={r.id}
+              onClick={() => navigate(`/restaurant/${r.id}`)}
+              className="cursor-pointer p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white"
+              >
+                {r.image && (
+                  <img
+                    src={`http://localhost:8080${r.image}`}
+                    alt={r.name}
+                    className="w-full h-[250px] object-cover rounded-xl mb-4"
+                  />
+                )}
 
-            {renderAdminButtons_FixAndDelete(r.id)}
+                <h2 className="text-lg font-semibold mb-1">{r.name}</h2>
+                <p className="text-sm text-gray-600 mb-1">{r.category} · {r.location}</p>
+                <p className="text-sm mb-2">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
+
+                {renderAdminButtons_FixAndDelete(r.id)}
+              </div>
+
+              ))}
           </div>
 
-          ))}
-      </div>
+        </div>
+
+      )}
+      
 
       {restaurants.length === 0 ? (
 
         <p className="text-center text-gray-500">ไม่มีข้อมูลร้านอาหาร</p>
       ) : (
-
+      
         <div className="max-w-6xl mx-auto">
 
           <p id="food" className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6">Food</p>
@@ -271,15 +328,11 @@ function App() {
               .slice(0, visibleCount) //แสดงจำนวนที่กำหนด
               .map((r) => (
 
-                <div key={r.id} className="p-5 bg-white border rounded-xl shadow-lg hover:shadow-2xl transition duration-300">
-
-                  <h2 className="text-lg font-semibold mb-1">
-                    
-                  </h2>
-
-                  <p className="text-sm text-gray-600">{r.category} · {r.location}</p>
-
-                  <p className="text-sm mb-1">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
+                <div
+                key={r.id}
+                onClick={() => navigate(`/restaurant/${r.id}`)}
+                className="cursor-pointer p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white"
+                >
 
                   {r.image && (
                     <img
@@ -289,22 +342,26 @@ function App() {
                     />
                   )}
                   
+                  <h2 className="text-lg font-semibold mb-1">{r.name}</h2>
+                  <p className="text-sm text-gray-600">{r.category} · {r.location}</p>
+                  <p className="text-sm mb-1">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
+                  
                   {renderAdminButtons_FixAndDelete(r.id)}
                   
                 </div>
               ))}
           </div>
           
-          <div className="flex justify-center mt-4 mb-6">
+          <div className="flex justify-center mt-6 mb-6">
             
-            {restaurants.filter((r) => r.category === "Food").length > 3 && (
+            {restaurants.filter((r) => r.category === "Food").length > 4 && (
 
-              <div className="mt-6 text-center">
+              <div className="flex justify-center items-center gap-4">
                 
                 {visibleCount < restaurants.filter((r) => r.category === "Food").length ? (
 
                   <button
-                    onClick={() => setVisibleCount((prev) => prev + 3)} // เพิ่มทีละ 3
+                    onClick={() => setVisibleCount((prev) => prev + 4)} // เพิ่มทีละ 4
                     className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
                   >
                     แสดงเพิ่มเติม
@@ -313,7 +370,7 @@ function App() {
                 ) : (
 
                   <button
-                    onClick={() => setVisibleCount(4)} // ซ่อนกลับเหลือ 3
+                    onClick={() => setVisibleCount(4)} // ซ่อนกลับเหลือ 4
                     className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500"
                   >
                     ซ่อน
@@ -325,11 +382,11 @@ function App() {
 
           </div>
 
-          {renderSwiperSection("Dessert", "Dessert")}
+            {renderSwiperSection("Dessert", "Dessert")}
 
-          {renderSwiperSection("Drink", "Drink")}
+            {renderSwiperSection("Drink", "Drink")}
 
-          {renderSwiperSection("Cafe", "Cafe")}
+            {renderSwiperSection("Cafe", "Cafe")}
 
         </div>
 

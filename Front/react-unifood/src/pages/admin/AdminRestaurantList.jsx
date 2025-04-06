@@ -26,6 +26,14 @@ function AdminRestaurantList() {
 
   return (
     <div className="max-w-5xl mx-auto p-6">
+      <nav className="mb-4">
+        <Link to="/" className="text-red-600 hover:underline mr-4 hover:text-red-500">
+          หน้าหลัก
+        </Link>
+        <Link to="/admin/add-restaurant" className="text-blue-600 hover:underline">
+          เพิ่มร้านอาหาร
+        </Link>
+      </nav>
       <h2 className="text-xl font-bold mb-4">รายการร้านอาหาร</h2>
 
       {restaurants.length === 0 ? (
@@ -36,7 +44,7 @@ function AdminRestaurantList() {
             <tr>
               <th className="border p-2">ชื่อร้าน</th>
               <th className="border p-2">หมวดหมู่</th>
-              <th className="border p-2">การจัดการ</th>
+              <th className="border p-2 ">การจัดการ</th>
             </tr>
           </thead>
           <tbody>
@@ -44,7 +52,7 @@ function AdminRestaurantList() {
               <tr key={r.id}>
                 <td className="border p-2">{r.name}</td>
                 <td className="border p-2">{r.category}</td>
-                <td className="border p-2 space-x-2">
+                <td className="border p-2 space-x-2 text-right">
                   <Link
                     to={`/admin/edit-restaurant/${r.id}`}
                     className="text-blue-600 hover:underline"

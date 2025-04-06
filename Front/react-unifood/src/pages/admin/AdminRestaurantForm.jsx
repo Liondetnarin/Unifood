@@ -55,16 +55,19 @@ function AdminRestaurantForm() {
 
   // ฟังก์ชันสำหรับล้างข้อมูลในฟอร์ม
   const handleClear = () => {
+    if (!window.confirm("ยืนยันการล้างข้อมูล?")) return;
     setRestaurant({ name: "", category: "", location: "" });
   };
 
   const handleCancel = (e) => {
+    if (!window.confirm("ยืนยันการยกเลิก? \nระบบจะพาคุณไปสู่หน้าหลัก")) return;
     e.preventDefault();
     navigate("/"); // กลับไปยังหน้าหลักหรือหน้าที่ต้องการ
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4 sm:px-6 md:px-10">
+    <div className="flex items-center justify-center min-h-screen px-4 sm:px-6 md:px-10 bg-gray-200">
+
       <form onSubmit={handleSubmit} className="space-y-4 p-4 rounded shadow-md w-full max-w-md bg-white">
 
         <h1 className="text-2xl font-bold text-center">เพิ่มร้านอาหาร</h1>
@@ -82,7 +85,7 @@ function AdminRestaurantForm() {
         <input
           type="text"
           name="category"
-          placeholder="หมวดหมู่ (เช่น อาหารตามสั่ง)"
+          placeholder="หมวดหมู่ (Food, Dessert, Drink, Cafe)"
           value={restaurant.category}
           onChange={handleChange}
           className="w-full p-2 border rounded"
@@ -129,14 +132,7 @@ function AdminRestaurantForm() {
           />
         )}
 
-        <div className="flex justify-between mt-4">
-          <button
-            type="submit"
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-          >
-            บันทึก
-          </button>
-
+        <div className="flex justify-end space-x-2 mb-4">
           <button
             type="reset"
             onClick={handleClear}
@@ -147,12 +143,20 @@ function AdminRestaurantForm() {
         </div>
 
         <button
+          type="submit"
+          className="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          บันทึก
+        </button>
+
+        <button
           type="button"
           onClick={handleCancel}
           className="w-full bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
         >
           ยกเลิก
         </button>
+
       </form>
     </div>
 

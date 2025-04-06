@@ -74,10 +74,39 @@ public class RestaurantController {
 
     // แก้ไขร้านอาหาร
     @PutMapping("/{id}")
-    public Restaurants updateRestaurant(@PathVariable String id, @RequestBody Restaurants updated) {
-        updated.setId(id);
-        return restaurantRepository.save(updated);
+    public ResponseEntity<?> updateRestaurant(
+            @PathVariable String id,
+            @RequestParam("name") String name,
+            @RequestParam("category") String category,
+            @RequestParam("location") String location,
+            @RequestParam(value = "image", required = false) MultipartFile imageFile
+    ) {
+        try {
+            Restaurants restaurant = restaurantRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("ไม่พบร้าน"));
+
+            restaurant.setName(name);
+            restaurant.setCategory(category);
+            restaurant.setLocation(location);
+
+            // ถ้ามีการอัปโหลดไฟล์ใหม่
+            if (imageFile != null && !imageFile.isEmpty()) {
+                String filename = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
+                Path imagePath = Paths.get("uploads/" + filename);
+                Files.createDirectories(imagePath.getParent());
+                Files.write(imagePath, imageFile.getBytes());
+
+                restaurant.setImage("/uploads/" + filename); // อัปเดต path รูปใหม่
+            }
+
+            restaurantRepository.save(restaurant);
+            return ResponseEntity.ok(restaurant);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("เกิดข้อผิดพลาดในการอัปเดตร้าน: " + e.getMessage());
+        }
     }
+
 
     // ลบร้านอาหารตาม ID
     @DeleteMapping("/{id}")
