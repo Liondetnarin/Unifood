@@ -29,13 +29,13 @@ function App() {
   // สร้าง state สำหรับการค้นหา
   const handleSearch = (e) => {
     e.preventDefault();
-  
+
     // ✅ ป้องกันการส่ง query ว่าง (เช่น กดค้นหาโดยไม่พิมพ์)
     if (!searchText.trim()) {
       alert("กรุณากรอกคำค้นหา");
       return;
     }
-  
+
     fetch(`http://localhost:8080/api/restaurants/search?keyword=${encodeURIComponent(searchText)}`)
       .then((res) => {
         if (!res.ok) throw new Error("เกิดข้อผิดพลาดในการค้นหา");
@@ -50,7 +50,7 @@ function App() {
         setRestaurants([]); // ป้องกัน .sort() error
       });
   };
-  
+
 
   // ฟังก์ชันสำหรับแสดงหมวดหมู่ร้านอาหารใน Swiper
   const renderSwiperSection = (category, displayName) => {
@@ -69,12 +69,12 @@ function App() {
         </div>
       );
     }
-  
+
     return (
-      
+
       <div className="max-w-6xl mx-auto">
         <p id={category.toLowerCase()} className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8">{displayName}</p>
-  
+
         <div className="mb-6">
           {count >= 1 ? (
             <Swiper
@@ -91,8 +91,8 @@ function App() {
               {filtered.map((r) => (
                 <SwiperSlide key={r.id}>
                   <div
-                  onClick={() => navigate(`/restaurant/${r.id}`)}
-                  className="mx-auto cursor-pointer p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white mb-8"
+                    onClick={() => navigate(`/restaurant/${r.id}`)}
+                    className="mx-auto cursor-pointer p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white mb-8"
                   >
                     {r.image && (
                       <img
@@ -141,7 +141,7 @@ function App() {
   // ฟังก์ชันสำหรับแสดงปุ่มแก้ไขและลบร้านอาหาร
   const renderAdminButtons_FixAndDelete = (id) => {
     if (!isAdmin) return null;
-  
+
     return (
       <div className="flex gap-2 mt-4">
         <button
@@ -153,7 +153,7 @@ function App() {
         >
           📝 แก้ไข
         </button>
-  
+
         <button
           onClick={(e) => {
             e.stopPropagation(); // หยุดการทำงานของเหตุการณ์คลิกที่เกิดขึ้นใน div หลัก
@@ -170,47 +170,50 @@ function App() {
   // ฟังก์ชันสำหรับเพิ่มร้านอาหาร
   const AdminButtons_Add = (id) => {
     if (!isAdmin) return null;
-  
+
     return (
-    <div
-    onClick={() => navigate("/admin/add-restaurant")}
-    className="flex justify-center">
-      
-      <button className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700">
-        เพิ่มร้านอาหาร
-      </button>
-    </div>
-  )};
+      <div
+        onClick={() => navigate("/admin/add-restaurant")}
+        className="flex justify-center">
+
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700">
+          เพิ่มร้านอาหาร
+        </button>
+      </div>
+    )
+  };
 
   // ฟังก์ชันสำหรับดูรีวิวที่รออนุมัติ
   const AdminButtons_Riview = (id) => {
     if (!isAdmin) return null;
-  
+
     return (
-    <div
-    onClick={() => navigate("/admin/reviews")}
-    className="flex justify-center">
-      
-      <button className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700">
-        รีวิวที่รออนุมัติ
-      </button>
-    </div>
-  )};
+      <div
+        onClick={() => navigate("/admin/reviews")}
+        className="flex justify-center">
+
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700">
+          รีวิวที่รออนุมัติ
+        </button>
+      </div>
+    )
+  };
 
   // ฟังก์ชันสำหรับดูรีวิวที่รออนุมัติ
   const AdminButtons_RestaurantList = (id) => {
     if (!isAdmin) return null;
-  
+
     return (
-    <div
-    onClick={() => navigate("/admin/restaurants ")}
-    className="flex justify-center">
-      
-      <button className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700">
-        รายการร้านอาหาร
-      </button>
-    </div>
-  )};
+      <div
+        onClick={() => navigate("/admin/restaurants ")}
+        className="flex justify-center">
+
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700">
+          รายการร้านอาหาร
+        </button>
+      </div>
+    )
+  };
 
   // ฟังก์ชันสำหรับลบร้านอาหาร
   const handleDelete = async (id) => {
@@ -240,7 +243,7 @@ function App() {
 
       <div>
         <nav className="bg-yellow-400 shadow-md p-4 mb-6 rounded-lg">
-          
+
           <div className="flex justify-between items-center max-w-8xl mx-auto">
 
             <div className="flex space-x-4 items-center">
@@ -248,7 +251,7 @@ function App() {
               <Link to="/">
                 <span className="text-4xl font-bold text-blue-700">Uni</span>
                 <span className="text-4xl font-bold text-red-600">Food</span>
-              </Link> 
+              </Link>
 
             </div>
 
@@ -267,22 +270,22 @@ function App() {
                 <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-bold">
                   ค้นหา
                 </button>
-                
+
               </form>
-              
+
             </div>
 
             <div className="flex gap-4 justify-center items-center flex-wrap">
 
-            {isAdmin && AdminButtons_Riview()}
+              {isAdmin && AdminButtons_Riview()}
 
-            {isAdmin && AdminButtons_RestaurantList()}
+              {isAdmin && AdminButtons_RestaurantList()}
 
               <Link to="/login">
                 <button className="text-gray-700 hover:text-blue-600">Log in</button>
               </Link>
 
-              <Link to="/signup">
+              <Link to="/register">
                 <button className="text-gray-700 hover:text-blue-600">Sign up</button>
               </Link>
 
@@ -296,7 +299,7 @@ function App() {
 
         <div className="flex gap-4 mb-4 justify-center items-center flex-wrap">
 
-          {["Recommend", "Food", "Dessert", "Drink", "Coffee"].map((category) => (
+          {["Food", "Dessert", "Drink", "Cafe"].map((category) => (
             <button key={category} className="bg-yellow-400 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-500"
 
               onClick={() => {
@@ -305,51 +308,51 @@ function App() {
                   section.scrollIntoView({ behavior: "smooth" });
                 }
               }}
-              >{category}
+            >{category}
             </button>
 
           ))}
 
           {isAdmin && AdminButtons_Add()}
-        
+
         </div>
       </div>
 
       {restaurants.length === 0 ? (
 
-      <p className="text-center text-gray-500">ไม่มีข้อมูลร้านอาหาร</p>
+        <p className="text-center text-gray-500">ไม่มีข้อมูลร้านอาหาร</p>
       ) : (
-      
+
         <div className="max-w-6xl mx-auto">
-            
+
           <h2 id="Recommend For You" className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6">Recommend For You</h2>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
 
             {restaurants
               .sort(() => Math.random() - 0.5) // สุ่มเรียงลำดับ
               .slice(0, 4) // เลือกมาแค่ 4 รายการ
               .map((r) => (
-              
-              <div
-              key={r.id}
-              onClick={() => navigate(`/restaurant/${r.id}`)}
-              className="cursor-pointer p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white"
-              >
-                {r.image && (
-                  <img
-                    src={`http://localhost:8080${r.image}`}
-                    alt={r.name}
-                    className="w-full h-[250px] object-cover rounded-xl mb-4"
-                  />
-                )}
 
-                <h2 className="text-lg font-semibold mb-1">{r.name}</h2>
-                <p className="text-sm text-gray-600 mb-1">{r.category} · {r.location}</p>
-                <p className="text-sm mb-2">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
+                <div
+                  key={r.id}
+                  onClick={() => navigate(`/restaurant/${r.id}`)}
+                  className="cursor-pointer p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white"
+                >
+                  {r.image && (
+                    <img
+                      src={`http://localhost:8080${r.image}`}
+                      alt={r.name}
+                      className="w-full h-[250px] object-cover rounded-xl mb-4"
+                    />
+                  )}
 
-                {renderAdminButtons_FixAndDelete(r.id)}
-              </div>
+                  <h2 className="text-lg font-semibold mb-1">{r.name}</h2>
+                  <p className="text-sm text-gray-600 mb-1">{r.category} · {r.location}</p>
+                  <p className="text-sm mb-2">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
+
+                  {renderAdminButtons_FixAndDelete(r.id)}
+                </div>
 
               ))}
           </div>
@@ -357,13 +360,13 @@ function App() {
         </div>
 
       )}
-      
+
 
       {restaurants.length === 0 ? (
 
         <p className="text-center text-gray-500">ไม่มีข้อมูลร้านอาหาร</p>
       ) : (
-      
+
         <div className="max-w-6xl mx-auto">
 
           <p id="food" className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6">Food</p>
@@ -376,9 +379,9 @@ function App() {
               .map((r) => (
 
                 <div
-                key={r.id}
-                onClick={() => navigate(`/restaurant/${r.id}`)}
-                className="cursor-pointer p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white"
+                  key={r.id}
+                  onClick={() => navigate(`/restaurant/${r.id}`)}
+                  className="cursor-pointer p-6 border border-gray-300 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 bg-white"
                 >
 
                   {r.image && (
@@ -388,23 +391,23 @@ function App() {
                       className="w-full h-[250px] object-cover rounded-lg mb-4"
                     />
                   )}
-                  
+
                   <h2 className="text-lg font-semibold mb-1">{r.name}</h2>
                   <p className="text-sm text-gray-600">{r.category} · {r.location}</p>
                   <p className="text-sm mb-1">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
-                  
+
                   {renderAdminButtons_FixAndDelete(r.id)}
-                  
+
                 </div>
               ))}
           </div>
-          
+
           <div className="flex justify-center mt-6 mb-6">
-            
+
             {restaurants.filter((r) => r.category === "Food").length > 4 && (
 
               <div className="flex justify-center items-center gap-4">
-                
+
                 {visibleCount < restaurants.filter((r) => r.category === "Food").length ? (
 
                   <button
@@ -429,11 +432,11 @@ function App() {
 
           </div>
 
-            {renderSwiperSection("Dessert", "Dessert")}
+          {renderSwiperSection("Dessert", "Dessert")}
 
-            {renderSwiperSection("Drink", "Drink")}
+          {renderSwiperSection("Drink", "Drink")}
 
-            {renderSwiperSection("Cafe", "Cafe")}
+          {renderSwiperSection("Cafe", "Cafe")}
 
         </div>
 
