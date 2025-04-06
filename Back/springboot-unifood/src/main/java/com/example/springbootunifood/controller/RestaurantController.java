@@ -114,8 +114,8 @@ public class RestaurantController {
     }
 
     @GetMapping("/search")
-    public List<Restaurants> searchRestaurants(@RequestParam("keyword") String keyword) {
-        return restaurantRepository.findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCase(keyword, keyword);
+    public List<Restaurants> searchRestaurants(@RequestParam("query") String query) {
+        return restaurantRepository.findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCase(query, query);
     }
 
 }
