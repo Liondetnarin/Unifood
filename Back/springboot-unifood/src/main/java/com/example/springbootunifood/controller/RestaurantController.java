@@ -44,17 +44,17 @@ public class RestaurantController {
             @RequestParam("image") MultipartFile imageFile
     ) {
         try {
-            // ✅ ตั้งชื่อไฟล์สุ่ม
+            // ตั้งชื่อไฟล์สุ่ม
             String filename = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
             Path imagePath = Paths.get("uploads/" + filename);
 
-            // ✅ สร้างโฟลเดอร์ถ้ายังไม่มี
+            // สร้างโฟลเดอร์ถ้ายังไม่มี
             Files.createDirectories(imagePath.getParent());
 
-            // ✅ เซฟไฟล์รูป
+            // เซฟไฟล์รูป
             Files.write(imagePath, imageFile.getBytes());
 
-            // ✅ สร้างและบันทึกข้อมูลร้าน
+            // สร้างและบันทึกข้อมูลร้าน
             Restaurants restaurant = new Restaurants();
             restaurant.setName(name);
             restaurant.setCategory(category);

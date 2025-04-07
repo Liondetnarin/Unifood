@@ -45,7 +45,7 @@ function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gray-200">
 
       <div className="text-center max-w-md w-full p-6 bg-white rounded-xl shadow-md">
 

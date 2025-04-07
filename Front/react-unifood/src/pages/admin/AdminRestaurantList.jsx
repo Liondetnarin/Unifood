@@ -25,6 +25,7 @@ function AdminRestaurantList() {
   };
 
   return (
+    <div className="bg-gray-200 min-h-screen flex items-center justify-center">
     <div className="max-w-5xl mx-auto p-6">
       <nav className="mb-4">
         <Link to="/" className="text-red-600 hover:underline mr-4 hover:text-red-500">
@@ -39,12 +40,12 @@ function AdminRestaurantList() {
       {restaurants.length === 0 ? (
         <p>ไม่มีร้านอาหาร</p>
       ) : (
-        <table className="w-full table-auto border">
-          <thead className="bg-gray-100">
+        <table className="w-full table-auto border rounded-lg shadow-md bg-white">
+          <thead className="bg-white">
             <tr>
               <th className="border p-2">ชื่อร้าน</th>
               <th className="border p-2">หมวดหมู่</th>
-              <th className="border p-2 ">การจัดการ</th>
+              <th className="border p-2">การจัดการ</th>
             </tr>
           </thead>
           <tbody>
@@ -52,13 +53,15 @@ function AdminRestaurantList() {
               <tr key={r.id}>
                 <td className="border p-2">{r.name}</td>
                 <td className="border p-2">{r.category}</td>
-                <td className="border p-2 space-x-2 text-right">
+                <td className="border p-2 text-right">
+                  
                   <Link
                     to={`/admin/edit-restaurant/${r.id}`}
                     className="text-blue-600 hover:underline"
                   >
                     แก้ไข
                   </Link>
+
                   <button
                     onClick={() => handleDelete(r.id)}
                     className="text-red-600 hover:underline"
@@ -71,6 +74,7 @@ function AdminRestaurantList() {
           </tbody>
         </table>
       )}
+    </div>
     </div>
   );
 }

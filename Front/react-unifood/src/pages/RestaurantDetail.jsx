@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import StarRating from "../components/StarRating";
+import { Star } from "lucide-react";
 
 function RestaurantDetail() {
   const { id } = useParams();
@@ -143,7 +145,7 @@ function RestaurantDetail() {
         <img
           src={`http://localhost:8080${restaurant.image}`}
           alt={restaurant.name}
-          className=""
+          className="w-full h-64 object-cover rounded-lg mt-4"
         />
       )}
 
@@ -160,10 +162,24 @@ function RestaurantDetail() {
           <form onSubmit={handleSubmit} className="space-y-2 border-t pt-4 mt-4">
             <h2 className="text-xl font-semibold">เขียนรีวิว</h2>
             <div className="grid grid-cols-2 gap-2">
-              <input type="number" name="tasteRating" value={newReview.tasteRating} onChange={handleChange} min="1" max="5" className="p-2 border rounded" placeholder="ความอร่อย (1-5)" />
-              <input type="number" name="cleanlinessRating" value={newReview.cleanlinessRating} onChange={handleChange} min="1" max="5" className="p-2 border rounded" placeholder="ความสะอาด (1-5)" />
-              <input type="number" name="speedRating" value={newReview.speedRating} onChange={handleChange} min="1" max="5" className="p-2 border rounded" placeholder="ความเร็ว (1-5)" />
-              <input type="number" name="valueRating" value={newReview.valueRating} onChange={handleChange} min="1" max="5" className="p-2 border rounded" placeholder="ความคุ้มค่า (1-5)" />
+              
+            <StarRating
+              rating={newReview.tasteRating}
+              onChange={(val) => setNewReview({ ...newReview, tasteRating: val })}
+            />
+            <StarRating
+              rating={newReview.cleanlinessRating}
+              onChange={(val) => setNewReview({ ...newReview, cleanlinessRating: val })}
+            />
+            <StarRating
+              rating={newReview.speedRating}
+              onChange={(val) => setNewReview({ ...newReview, speedRating: val })}
+            />
+            <StarRating
+              rating={newReview.valueRating}
+              onChange={(val) => setNewReview({ ...newReview, valueRating: val })}
+            />
+              
             </div>
             <textarea name="comment" value={newReview.comment} onChange={handleChange} className="w-full p-2 border rounded" placeholder="เขียนความคิดเห็น..." />
             <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">ส่งรีวิว</button>
