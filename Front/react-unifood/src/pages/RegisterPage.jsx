@@ -9,6 +9,10 @@ function RegisterPage() {
         navigate("/");
     };
 
+    const goToLogin = () => {
+        navigate("/login");
+      };
+
     const handleRegister = async (e) => {
         e.preventDefault();
 
@@ -27,10 +31,10 @@ function RegisterPage() {
                 localStorage.setItem("role", user.role);
                 localStorage.setItem("email", user.email);
 
-                alert("สมัครสมาชิกสำเร็จ!");
+                alert("Login completed!");
                 navigate("/"); // กลับหน้าหลัก
             } else {
-                alert("สมัครสมาชิกล้มเหลว");
+                alert("Login failed");
                 console.log("รายละเอียด:", user);
             }
         } catch (err) {
@@ -42,13 +46,13 @@ function RegisterPage() {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="text-center max-w-md w-full p-6 bg-white rounded-xl shadow-md">
-                <h2 className="text-2xl font-bold mb-6">สมัครสมาชิก</h2>
+                <h2 className="text-2xl font-bold mb-6">Sign Up</h2>
                 <form onSubmit={handleRegister} className="space-y-4">
                     <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="อีเมล: name@example.com"
+                        placeholder="StudentID@unifood.com"
                         className="w-full p-3 border border-gray-300 rounded"
                         required
                     />
@@ -56,7 +60,7 @@ function RegisterPage() {
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        placeholder="รหัสผ่าน: Unifood2568"
+                        placeholder="Password"
                         className="w-full p-3 border border-gray-300 rounded"
                         required
                     />
@@ -64,14 +68,22 @@ function RegisterPage() {
                         type="submit"
                         className="w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition"
                     >
-                        สมัครสมาชิก
+                        Sign Up
                     </button>
                     <button
                         onClick={goToHome}
                         className="w-full bg-red-600 text-white font-semibold py-2 rounded hover:bg-red-700 transition"
                     >
-                        หน้าหลัก
+                        Cancel
                     </button>
+
+                    <div
+                        className="text-blue-600 cursor-pointer hover:underline transition text-center mt-4"
+                        onClick={goToLogin}
+                    >
+                        Log In
+
+                    </div>
                 </form>
             </div>
         </div>
