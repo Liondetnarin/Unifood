@@ -68,7 +68,7 @@ function App() {
             {displayName}
           </p>
           <p className="text-center text-gray-500 mb-8">
-            ไม่มีข้อมูลร้านอาหารในหมวด {displayName}
+            No restaurant information {displayName}
           </p>
         </div>
       );
@@ -271,7 +271,7 @@ function App() {
               />
 
               <button type="submit" className=" bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-bold">
-                ค้นหา
+                Search
               </button>
 
             </form>
@@ -356,7 +356,7 @@ function App() {
 
       {restaurants.length === 0 ? (
 
-        <p className="text-center text-gray-500">ไม่มีข้อมูลร้านอาหาร</p>
+        <p className="text-center text-gray-500">No restaurant information</p>
       ) : (
 
         <div className="max-w-6xl mx-auto">
@@ -400,7 +400,7 @@ function App() {
 
       {restaurants.length === 0 ? (
 
-        <p className="text-center text-gray-500">ไม่มีข้อมูลร้านอาหาร</p>
+        <p className="text-center text-gray-500">No restaurant information</p>
       ) : (
 
         <div className="max-w-6xl mx-auto">
@@ -450,7 +450,7 @@ function App() {
                     onClick={() => setVisibleCount((prev) => prev + 4)} // เพิ่มทีละ 4
                     className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
                   >
-                    แสดงเพิ่มเติม
+                    More
                   </button>
 
                 ) : (
@@ -459,7 +459,7 @@ function App() {
                     onClick={() => setVisibleCount(4)} // ซ่อนกลับเหลือ 4
                     className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500"
                   >
-                    ซ่อน
+                    Hide
                   </button>
 
                 )}
