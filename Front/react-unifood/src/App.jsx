@@ -367,9 +367,13 @@ function App() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
 
-            {restaurants
-              .sort(() => Math.random() - 0.5) // สุ่มเรียงลำดับ
-              .slice(0, 4) // เลือกมาแค่ 4 รายการ
+          {restaurants
+            .sort((a, b) => {
+              const ratingDiff = (b.averageRating || 0) - (a.averageRating || 0);
+              if (ratingDiff !== 0) return ratingDiff;
+              return (b.reviewsCount || 0) - (a.reviewsCount || 0); // ถ้าคะแนนเท่ากัน ให้ดูจำนวนรีวิว
+              })
+              .slice(0, 4)
               .map((r) => (
 
                 <div
