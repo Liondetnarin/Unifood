@@ -138,8 +138,8 @@ function RestaurantDetail() {
 
   return (
     <div className="h-screen w-screen bg-gradient-to-b from-orange-400 to-orange-200 p-6 overflow-auto">
-      <h1 className="text-2xl font-bold text-center" > {restaurant.name}</h1 >
-      <p p className="text-gray-600" > {restaurant.category} · {restaurant.location}</p >
+      <h1 className="text-2xl font-bold text-center" > {restaurant.name}</h1>
+      <p className="text-gray-600" > {restaurant.category} · {restaurant.location}</p>
       
       {restaurant.image && (
         <img
@@ -149,7 +149,7 @@ function RestaurantDetail() {
         />
       )}
 
-      <button button
+      <button
         onClick={() => setShowForm(!showForm)
         }
         className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"

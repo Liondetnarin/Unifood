@@ -2,6 +2,7 @@ package com.example.springbootunifood.controller;
 
 import com.example.springbootunifood.ProfanityFilterUtil;
 import com.example.springbootunifood.model.Reviews;
+import com.example.springbootunifood.repository.RestaurantRepository;
 import com.example.springbootunifood.repository.ReviewRepository;
 import com.example.springbootunifood.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,13 @@ public class ReviewController {
 
     @Autowired
     private UserRepository userRepository;
+    private RestaurantRepository restaurantRepository;
 
     private final ReviewRepository reviewRepository;
 
-    public ReviewController(ReviewRepository reviewRepository) {
+    public ReviewController(ReviewRepository reviewRepository, RestaurantRepository restaurantRepository) {
         this.reviewRepository = reviewRepository;
+        this.restaurantRepository = restaurantRepository;
     }
 
     // ดูรีวิวทั้งหมดของร้านอาหาร
@@ -59,15 +62,31 @@ public class ReviewController {
             review.setUserName(user.getName());
         });
 
-        return ResponseEntity.ok(reviewRepository.save(review));
+        Reviews saved = reviewRepository.save(review);
+
+
+        return ResponseEntity.ok(saved);
     }
 
     // ลบรีวิวตาม ID
     @DeleteMapping("/{id}")
-    public void deleteReview(@PathVariable String id) {
+    public ResponseEntity<?> deleteReview(@PathVariable String id) {
+        Optional<Reviews> reviewOpt = reviewRepository.findById(id);
+
+        if (!reviewOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Review not found");
+        }
+
+        Reviews review = reviewOpt.get();
+        String restaurantId = review.getRestaurantId();
+
         reviewRepository.deleteById(id);
+        updateRestaurantAverage(restaurantId);
+
+        return ResponseEntity.ok("Review deleted");
     }
 
+    //
     @PutMapping("/{id}")
     public ResponseEntity<?> updateReview(@PathVariable String id, @RequestBody Reviews updatedReview) {
         return reviewRepository.findById(id).map(existing -> {
@@ -78,30 +97,74 @@ public class ReviewController {
             existing.setComment(updatedReview.getComment());
             existing.setCreatedAt(LocalDateTime.now());
 
-            return ResponseEntity.ok(reviewRepository.save(existing));
+            reviewRepository.save(existing);
+            updateRestaurantAverage(existing.getRestaurantId());
+
+            return ResponseEntity.ok(existing);
         }).orElse(ResponseEntity.notFound().build());
     }
 
+    //
     @PutMapping("/admin/approve/{id}")
     public ResponseEntity<?> approveReview(@PathVariable String id) {
         Optional<Reviews> reviewOpt = reviewRepository.findById(id);
         if (reviewOpt.isPresent()) {
             Reviews review = reviewOpt.get();
             review.setStatus("approved");
-            return ResponseEntity.ok(reviewRepository.save(review));
+            reviewRepository.save(review);
+
+            updateRestaurantAverage(review.getRestaurantId());
+            return ResponseEntity.ok(review);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ไม่พบรีวิวนี้");
         }
     }
 
+    //
     @DeleteMapping("/admin/{id}")
     public ResponseEntity<?> deleteReviewByAdmin(@PathVariable String id) {
-        if (!reviewRepository.existsById(id)) {
+        Optional<Reviews> reviewOpt = reviewRepository.findById(id);
+
+        if (!reviewOpt.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Review not found");
         }
 
+        Reviews review = reviewOpt.get();
+        String restaurantId = review.getRestaurantId();
+
         reviewRepository.deleteById(id);
+        updateRestaurantAverage(review.getRestaurantId());
+
         return ResponseEntity.ok("Review deleted by admin");
+    }
+
+    // คำนวณค่าเฉลี่ย
+    private void updateRestaurantAverage(String restaurantId) {
+        List<Reviews> approvedReviews = reviewRepository.findByRestaurantIdAndStatus(restaurantId, "approved");
+
+        if (approvedReviews.isEmpty()) {
+            restaurantRepository.findById(restaurantId).ifPresent(restaurant -> {
+                restaurant.setAverageRating(0.0);
+                restaurant.setReviewsCount(0);
+                restaurantRepository.save(restaurant);
+            });
+            return;
+        }
+
+        double totalAvg = 0.0;
+
+        for (Reviews r : approvedReviews) {
+            double avg = (r.getTasteRating() + r.getCleanlinessRating() + r.getSpeedRating() + r.getValueRating()) / 4.0;
+            totalAvg += avg;
+        }
+
+        double finalAverage = totalAvg / approvedReviews.size();
+
+        restaurantRepository.findById(restaurantId).ifPresent(restaurant -> {
+            restaurant.setAverageRating(Math.round(finalAverage * 10.0) / 10.0); // ปัดเศษทศนิยม 1 ตำแหน่ง
+            restaurant.setReviewsCount(approvedReviews.size());
+            restaurantRepository.save(restaurant);
+        });
     }
 
 }

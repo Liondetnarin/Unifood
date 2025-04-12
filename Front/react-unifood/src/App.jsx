@@ -5,12 +5,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
-import { Icon, Menu, X, Edit, Search} from "lucide-react";
+import { Icon, Menu, X, Edit} from "lucide-react";
 
 function App() {
 
-  // ดึงข้อมูลร้านอาหารจาก API
-  useEffect(() => {
+  const fetchRestaurants = () => {
     fetch("/api/restaurants")
       .then((res) => res.json())
       .then((data) => {
@@ -18,6 +17,10 @@ function App() {
         setRestaurants(data);
       })
       .catch((err) => console.error("Error fetching:", err));
+  };
+
+  useEffect(() => {
+    fetchRestaurants();
   }, []);
 
   const navigate = useNavigate(); // ใช้ useNavigate เพื่อเปลี่ยนเส้นทาง
@@ -27,7 +30,6 @@ function App() {
   const [visibleCount, setVisibleCount] = useState(4); // เริ่มแสดง 4 ร้านอาหาร
   const [searchText, setSearchText] = useState(""); // สร้าง state สำหรับการค้นหา
   const [isOpen, setIsOpen] = useState(false);
-
   const toggleMenu = () => setIsOpen(!isOpen);
 
   // สร้าง state สำหรับการค้นหา
@@ -203,7 +205,7 @@ function App() {
     )
   };
 
-  // ฟังก์ชันสำหรับดูรีวิวที่รออนุมัติ
+  // ฟังก์ชันสำหรับดูรายการอาหาร
   const AdminButtons_RestaurantList = (id) => {
     if (!isAdmin) return null;
 
