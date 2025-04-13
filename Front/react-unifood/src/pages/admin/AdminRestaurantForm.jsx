@@ -7,6 +7,7 @@ function AdminRestaurantForm() {
   const [restaurant, setRestaurant] = useState({
     name: "",
     category: "",
+    description: "",
     location: "",
   });
 
@@ -27,6 +28,7 @@ function AdminRestaurantForm() {
     const data = new FormData();
     data.append("name", restaurant.name);
     data.append("category", restaurant.category);
+    data.append("description", restaurant.description);
     data.append("location", restaurant.location);
     if (imageFile) {
       data.append("image", imageFile); // แนบไฟล์รูปภาพ
@@ -82,17 +84,7 @@ function AdminRestaurantForm() {
           required
         />
 
-        <input
-          type="text"
-          name="category"
-          placeholder="หมวดหมู่ (Food, Dessert, Drink, Cafe)"
-          value={restaurant.category}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-          required
-        />
-
-        {/* <select
+        <select
           name="category"
           value={restaurant.category}
           onChange={handleChange}
@@ -104,7 +96,17 @@ function AdminRestaurantForm() {
           <option value="Dessert">Dessert</option>
           <option value="Drink">Drink</option>
           <option value="Cafe">Cafe</option>
-        </select> */}
+        </select>
+
+        <input
+          type="text"
+          name="description"
+          placeholder="รายละเอียดอาหารเพิ่มเติม"
+          value={restaurant.description}
+          onChange={handleChange}
+          className="w-full p-2 border rounded"
+          required
+        />
 
         <input
           type="text"

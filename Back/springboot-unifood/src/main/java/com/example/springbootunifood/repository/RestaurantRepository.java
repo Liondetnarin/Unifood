@@ -6,5 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface RestaurantRepository extends MongoRepository<Restaurants, String> {
-    List<Restaurants> findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCase(String name, String category);
+    List<Restaurants> findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String name, String category, String description);
 }

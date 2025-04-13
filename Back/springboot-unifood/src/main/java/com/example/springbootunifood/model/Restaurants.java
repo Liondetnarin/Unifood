@@ -14,6 +14,7 @@ public class Restaurants {
     private String id;
     private String name;
     private String category;
+    private String description;
     private String location;
     private double averageRating;
     private int reviewsCount;

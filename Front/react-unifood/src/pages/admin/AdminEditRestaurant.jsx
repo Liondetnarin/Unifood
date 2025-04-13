@@ -8,6 +8,7 @@ function AdminEditRestaurant() {
   const [restaurant, setRestaurant] = useState({
     name: "",
     category: "",
+    description: "",
     location: "",
     image: "",
   });
@@ -39,6 +40,7 @@ function AdminEditRestaurant() {
     const formData = new FormData();
     formData.append("name", restaurant.name);
     formData.append("category", restaurant.category);
+    formData.append("description", restaurant.description);
     formData.append("location", restaurant.location);
 
     if (imageFile) {
@@ -84,14 +86,31 @@ function AdminEditRestaurant() {
           className="w-full p-2 border rounded"
           required
         />
-        <input
+
+        <select
           name="category"
           value={restaurant.category}
           onChange={handleChange}
-          placeholder="หมวดหมู่"
+          className="w-full p-2 border rounded"
+          required
+        >
+          <option value="">-- Select a category --</option>
+          <option value="Food">Food</option>
+          <option value="Dessert">Dessert</option>
+          <option value="Drink">Drink</option>
+          <option value="Cafe">Cafe</option>
+        </select>
+
+        <input
+          type="text"
+          name="description"
+          placeholder="รายละเอียดอาหารเพิ่มเติม"
+          value={restaurant.description}
+          onChange={handleChange}
           className="w-full p-2 border rounded"
           required
         />
+
         <input
           name="location"
           value={restaurant.location}

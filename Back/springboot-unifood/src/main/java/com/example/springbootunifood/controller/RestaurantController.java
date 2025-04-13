@@ -40,6 +40,7 @@ public class RestaurantController {
     public ResponseEntity<?> createRestaurant(
             @RequestParam("name") String name,
             @RequestParam("category") String category,
+            @RequestParam("description")String description,
             @RequestParam("location") String location,
             @RequestParam("image") MultipartFile imageFile
     ) {
@@ -58,6 +59,7 @@ public class RestaurantController {
             Restaurants restaurant = new Restaurants();
             restaurant.setName(name);
             restaurant.setCategory(category);
+            restaurant.setDescription(description);
             restaurant.setLocation(location);
             restaurant.setImage("/uploads/" + filename); // เก็บ path
             restaurant.setAverageRating(0.0);
@@ -78,6 +80,7 @@ public class RestaurantController {
             @PathVariable String id,
             @RequestParam("name") String name,
             @RequestParam("category") String category,
+            @RequestParam("description") String description,
             @RequestParam("location") String location,
             @RequestParam(value = "image", required = false) MultipartFile imageFile
     ) {
@@ -87,6 +90,7 @@ public class RestaurantController {
 
             restaurant.setName(name);
             restaurant.setCategory(category);
+            restaurant.setDescription(description);
             restaurant.setLocation(location);
 
             // ถ้ามีการอัปโหลดไฟล์ใหม่
@@ -115,7 +119,7 @@ public class RestaurantController {
 
     @GetMapping("/search")
     public List<Restaurants> searchRestaurants(@RequestParam("query") String query) {
-        return restaurantRepository.findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCase(query, query);
+        return restaurantRepository.findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCaseOrDescriptionContainingIgnoreCase(query, query, query);
     }
 
 }

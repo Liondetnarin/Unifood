@@ -148,6 +148,10 @@ function RestaurantDetail() {
           className="w-full h-64 object-cover rounded-lg mt-4"
         />
       )}
+      
+      {restaurant.description && (
+        <p className="mt-4 text-gray-700">{restaurant.description}</p>
+      )}
 
       <button
         onClick={() => setShowForm(!showForm)
@@ -161,26 +165,40 @@ function RestaurantDetail() {
         showForm && (
           <form onSubmit={handleSubmit} className="space-y-2 border-t pt-4 mt-4">
             <h2 className="text-xl font-semibold">เขียนรีวิว</h2>
-            <div className="grid grid-cols-2 gap-2">
-              
-            <StarRating
-              rating={newReview.tasteRating}
-              onChange={(val) => setNewReview({ ...newReview, tasteRating: val })}
-            />
-            <StarRating
-              rating={newReview.cleanlinessRating}
-              onChange={(val) => setNewReview({ ...newReview, cleanlinessRating: val })}
-            />
-            <StarRating
-              rating={newReview.speedRating}
-              onChange={(val) => setNewReview({ ...newReview, speedRating: val })}
-            />
-            <StarRating
-              rating={newReview.valueRating}
-              onChange={(val) => setNewReview({ ...newReview, valueRating: val })}
-            />
-              
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <p className="font-medium">คะแนนความอร่อย</p>
+                <StarRating
+                  rating={newReview.tasteRating}
+                  onChange={(val) => setNewReview({ ...newReview, tasteRating: val })}
+                />
+              </div>
+
+              <div>
+                <p className="font-medium">คะแนนความสะอาด</p>
+                <StarRating
+                  rating={newReview.cleanlinessRating}
+                  onChange={(val) => setNewReview({ ...newReview, cleanlinessRating: val })}
+                />
+              </div>
+
+              <div>
+                <p className="font-medium">คะแนนความรวดเร็ว</p>
+                <StarRating
+                  rating={newReview.speedRating}
+                  onChange={(val) => setNewReview({ ...newReview, speedRating: val })}
+                />
+              </div>
+
+              <div>
+                <p className="font-medium">คะแนนความคุ้มค่า</p>
+                <StarRating
+                  rating={newReview.valueRating}
+                  onChange={(val) => setNewReview({ ...newReview, valueRating: val })}
+                />
+              </div>
             </div>
+
             <textarea name="comment" value={newReview.comment} onChange={handleChange} className="w-full p-2 border rounded" placeholder="เขียนความคิดเห็น..." />
             <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">ส่งรีวิว</button>
           </form>
