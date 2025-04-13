@@ -31,6 +31,11 @@ function App() {
   const [searchText, setSearchText] = useState(""); // สร้าง state สำหรับการค้นหา
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
+  
+  const goHome = () => {
+    navigate("/");
+    window.location.reload();
+  };
 
   // สร้าง state สำหรับการค้นหา
   const handleSearch = (e) => {
@@ -251,13 +256,14 @@ function App() {
 
         <div className="flex justify-between items-center max-w-8xl mx-auto">
 
-          <div className="flex space-x-4 items-center">
-
-            <Link to="/">
+          <div
+            className="flex items-center space-x-4 cursor-pointer"
+            onClick={goHome}
+          >
+            <div>
               <span className="text-4xl font-bold text-blue-700">Uni</span>
               <span className="text-4xl font-bold text-red-600">Food</span>
-            </Link>
-
+            </div>
           </div>
 
           <div className="flex items-center space-x-4">

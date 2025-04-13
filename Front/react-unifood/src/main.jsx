@@ -18,7 +18,8 @@ createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
+        <Route path="/" element={<App key={window.location.pathname} />} />
+
         <Route path="/admin/add-restaurant" element={<AdminRestaurantForm />} />
         <Route path="/admin/restaurants" element={<AdminRestaurantList />} />
         <Route path="/admin/edit-restaurant/:id" element={<AdminEditRestaurant />} />
