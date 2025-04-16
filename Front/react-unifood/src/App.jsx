@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
-import { Icon, Menu, X, Edit} from "lucide-react";
+import { Icon, Menu, X, Edit } from "lucide-react";
 
 function App() {
 
@@ -26,12 +26,19 @@ function App() {
   const navigate = useNavigate(); // ใช้ useNavigate เพื่อเปลี่ยนเส้นทาง
   const user = JSON.parse(localStorage.getItem("user")); // ดึงข้อมูลผู้ใช้จาก localStorage
   const isAdmin = user?.role === "admin"; // ตรวจสอบว่าผู้ใช้เป็น admin หรือไม่
+  const isLoggedIn = !!user;
   const [restaurants, setRestaurants] = useState([]); // สร้าง state สำหรับร้านอาหาร
   const [visibleCount, setVisibleCount] = useState(4); // เริ่มแสดง 4 ร้านอาหาร
   const [searchText, setSearchText] = useState(""); // สร้าง state สำหรับการค้นหา
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
-  
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+    window.location.reload(); // refresh เพื่ออัปเดตเมนู
+  }
+
   const goHome = () => {
     navigate("/");
     window.location.reload();
@@ -287,7 +294,7 @@ function App() {
           </div>
 
           <div className="relative">
-            
+
             {/* Burger Icon */}
             <button
               onClick={toggleMenu}
@@ -302,35 +309,55 @@ function App() {
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-50 flex flex-col items-start p-4 space-y-2">
 
                 {isAdmin && AdminButtons_Riview()}
-                  
+
                 {isAdmin && AdminButtons_RestaurantList()}
 
-                <Link to="/login">
-                <button className="bg-yellow-400 text-gray-700 hover:text-blue-600">Log in</button>
-                </Link>
+                {isLoggedIn ? (
+                  <button
+                    onClick={handleLogout}
+                    className="text-red-600 hover:text-red-800 font-semibold"
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <>
+                    <Link to="/login">
+                      <button className="bg-yellow-400 text-gray-700 hover:text-blue-600">Log in</button>
+                    </Link>
 
-                <Link to="/register">
-                  <button className="bg-yellow-400 text-gray-700 hover:text-blue-600">Sign up</button>
-                </Link>
-
+                    <Link to="/register">
+                      <button className="bg-yellow-400 text-gray-700 hover:text-blue-600">Sign up</button>
+                    </Link>
+                  </>
+                )}
               </div>
             )}
 
             {/* Desktop Menu */}
             <div className="hidden md:flex gap-4 justify-center items-center">
-              
+
               {isAdmin && AdminButtons_Riview()}
-                
+
               {isAdmin && AdminButtons_RestaurantList()}
 
-              <Link to="/login">
-                <button className="text-gray-700 hover:text-blue-600">Log in</button>
-              </Link>
+              {isLoggedIn ? (
+                <button
+                  onClick={handleLogout}
+                  className="text-red-600 hover:text-red-800 font-semibold"
+                >
+                  Logout
+                </button>
+              ) : (
+                <>
+                  <Link to="/login">
+                    <button className="text-gray-700 hover:text-blue-600">Log in</button>
+                  </Link>
 
-              <Link to="/register">
-                <button className="text-gray-700 hover:text-blue-600">Sign up</button>
-              </Link>
-              
+                  <Link to="/register">
+                    <button className="text-gray-700 hover:text-blue-600">Sign up</button>
+                  </Link>
+                </>
+              )}
             </div>
 
           </div>
@@ -373,11 +400,11 @@ function App() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
 
-          {restaurants
-            .sort((a, b) => {
-              const ratingDiff = (b.averageRating || 0) - (a.averageRating || 0);
-              if (ratingDiff !== 0) return ratingDiff;
-              return (b.reviewsCount || 0) - (a.reviewsCount || 0); // ถ้าคะแนนเท่ากัน ให้ดูจำนวนรีวิว
+            {restaurants
+              .sort((a, b) => {
+                const ratingDiff = (b.averageRating || 0) - (a.averageRating || 0);
+                if (ratingDiff !== 0) return ratingDiff;
+                return (b.reviewsCount || 0) - (a.reviewsCount || 0); // ถ้าคะแนนเท่ากัน ให้ดูจำนวนรีวิว
               })
               .slice(0, 4)
               .map((r) => (
