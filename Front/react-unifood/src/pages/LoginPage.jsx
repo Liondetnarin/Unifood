@@ -102,7 +102,7 @@ function LoginPage() {
           <button
             onClick={goToHome}
             type="button"
-            className="w-full bg-gray-500 text-white font-semibold py-2 rounded hover:bg-gray-600 transition"
+            className="w-full bg-red-600 text-white font-semibold py-2 rounded hover:bg-red-700 transition"
           >
             Cancel
           </button>

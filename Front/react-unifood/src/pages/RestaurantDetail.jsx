@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import StarRating from "../components/StarRating";
 import { Star } from "lucide-react";
+import ReadOnlyStars from "../components/ReadOnlyStars";
 
 function RestaurantDetail() {
   const { id } = useParams();
@@ -140,7 +141,7 @@ function RestaurantDetail() {
     <div className="h-screen w-screen bg-gradient-to-b from-orange-400 to-orange-200 p-6 overflow-auto">
       <h1 className="text-2xl font-bold text-center" > {restaurant.name}</h1>
       <p className="text-gray-600" > {restaurant.category} · {restaurant.location}</p>
-      
+
       {restaurant.image && (
         <img
           src={`http://localhost:8080${restaurant.image}`}
@@ -148,7 +149,7 @@ function RestaurantDetail() {
           className="w-full h-64 object-cover rounded-lg mt-4"
         />
       )}
-      
+
       {restaurant.description && (
         <p className="mt-4 text-gray-700">{restaurant.description}</p>
       )}
@@ -230,7 +231,24 @@ function RestaurantDetail() {
                 ) : (
                   <>
                     <p className="text-sm font-medium text-blue-700">รีวิวโดย: {rev.userName || "ไม่ระบุชื่อ"}</p>
-                    <p>⭐ อร่อย: {rev.tasteRating}, สะอาด: {rev.cleanlinessRating}, เร็ว: {rev.speedRating}, คุ้ม: {rev.valueRating}</p>
+                    <div className="grid grid-cols-2 gap-1 text-sm text-gray-800 mb-1">
+                      <div className="flex items-center gap-1">
+                        <span>อร่อย:</span>
+                        <ReadOnlyStars value={rev.tasteRating} />
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span>สะอาด:</span>
+                        <ReadOnlyStars value={rev.cleanlinessRating} />
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span>รวดเร็ว:</span>
+                        <ReadOnlyStars value={rev.speedRating} />
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span>คุ้มค่า:</span>
+                        <ReadOnlyStars value={rev.valueRating} />
+                      </div>
+                    </div>
                     <p className="italic text-gray-700 mt-1">"{rev.comment}"</p>
                     {user && (rev.userId === user.id || user.role === "admin") && (
                       <div className="text-right text-sm">

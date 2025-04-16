@@ -341,12 +341,17 @@ function App() {
               {isAdmin && AdminButtons_RestaurantList()}
 
               {isLoggedIn ? (
-                <button
-                  onClick={handleLogout}
-                  className="text-red-600 hover:text-red-800 font-semibold"
-                >
-                  Logout
-                </button>
+                <div className="flex items-center gap-4">
+                  <span className="text-gray-700 font-medium">
+                    {user.email}
+                  </span>
+                  <button
+                    onClick={handleLogout}
+                    className="text-red-600 hover:text-red-800 font-semibold"
+                  >
+                    Logout
+                  </button>
+                </div>
               ) : (
                 <>
                   <Link to="/login">
