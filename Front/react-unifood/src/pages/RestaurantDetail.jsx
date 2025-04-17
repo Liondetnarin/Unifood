@@ -138,154 +138,118 @@ function RestaurantDetail() {
   if (!restaurant) return <div className="p-6">กำลังโหลดข้อมูลร้าน...</div>;
 
   return (
-    <div className="h-screen w-screen bg-gradient-to-b from-orange-400 to-orange-200 p-6 overflow-auto">
-      <h1 className="text-2xl font-bold text-center" > {restaurant.name}</h1>
-      <p className="text-gray-600" > {restaurant.category} · {restaurant.location}</p>
+    <div className="min-h-screen w-full bg-gradient-to-b from-orange-100 to-yellow-100 p-6">
+      <div className="max-w-3xl mx-auto bg-white shadow-xl rounded-2xl p-6">
+        <h1 className="text-3xl font-bold text-center text-orange-600">{restaurant.name}</h1>
+        <p className="text-gray-600 text-center mb-4">{restaurant.category} · {restaurant.location}</p>
 
-      {restaurant.image && (
-        <img
-          src={`http://localhost:8080${restaurant.image}`}
-          alt={restaurant.name}
-          className="w-full h-64 object-cover rounded-lg mt-4"
-        />
-      )}
-
-      {restaurant.description && (
-        <p className="mt-4 text-gray-700">{restaurant.description}</p>
-      )}
-
-      <button
-        onClick={() => setShowForm(!showForm)
-        }
-        className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
-      >
-        {showForm ? "ยกเลิกรีวิว" : "รีวิวร้านนี้"}
-      </button >
-
-      {
-        showForm && (
-          <form onSubmit={handleSubmit} className="space-y-2 border-t pt-4 mt-4">
-            <h2 className="text-xl font-semibold">เขียนรีวิว</h2>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
-                <p className="font-medium">คะแนนความอร่อย</p>
-                <StarRating
-                  rating={newReview.tasteRating}
-                  onChange={(val) => setNewReview({ ...newReview, tasteRating: val })}
-                />
-              </div>
-
-              <div>
-                <p className="font-medium">คะแนนความสะอาด</p>
-                <StarRating
-                  rating={newReview.cleanlinessRating}
-                  onChange={(val) => setNewReview({ ...newReview, cleanlinessRating: val })}
-                />
-              </div>
-
-              <div>
-                <p className="font-medium">คะแนนความรวดเร็ว</p>
-                <StarRating
-                  rating={newReview.speedRating}
-                  onChange={(val) => setNewReview({ ...newReview, speedRating: val })}
-                />
-              </div>
-
-              <div>
-                <p className="font-medium">คะแนนความคุ้มค่า</p>
-                <StarRating
-                  rating={newReview.valueRating}
-                  onChange={(val) => setNewReview({ ...newReview, valueRating: val })}
-                />
-              </div>
-            </div>
-
-            <textarea name="comment" value={newReview.comment} onChange={handleChange} className="w-full p-2 border rounded" placeholder="เขียนความคิดเห็น..." />
-            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">ส่งรีวิว</button>
-          </form>
-        )
-      }
-
-      <div className="h-screen mt-6 border-t pt-4">
-        <h3 className="text-lg font-semibold mb-2">รีวิวทั้งหมด</h3>
-        {reviews.length === 0 ? (
-          <p className="text-gray-500">ยังไม่มีรีวิว</p>
-        ) : (
-          <ul className="space-y-4">
-            {reviews.map((rev) => (
-              <li key={rev.id} className="border p-3 rounded bg-white">
-                {editingReviewId === rev.id ? (
-                  <form onSubmit={(e) => handleUpdateReview(e, rev.id)} className="space-y-2">
-                    <div className="grid grid-cols-2 gap-2">
-                      <input type="number" name="tasteRating" value={editReviewData.tasteRating} onChange={handleEditChange} min="1" max="5" className="p-2 border rounded" />
-                      <input type="number" name="cleanlinessRating" value={editReviewData.cleanlinessRating} onChange={handleEditChange} min="1" max="5" className="p-2 border rounded" />
-                      <input type="number" name="speedRating" value={editReviewData.speedRating} onChange={handleEditChange} min="1" max="5" className="p-2 border rounded" />
-                      <input type="number" name="valueRating" value={editReviewData.valueRating} onChange={handleEditChange} min="1" max="5" className="p-2 border rounded" />
-                    </div>
-                    <textarea name="comment" value={editReviewData.comment} onChange={handleEditChange} className="w-full p-2 border rounded" />
-                    <div className="flex gap-2">
-                      <button type="submit" className="bg-green-600 text-white px-4 py-1 rounded">บันทึก</button>
-                      <button type="button" className="bg-gray-500 text-white px-4 py-1 rounded" onClick={() => setEditingReviewId(null)}>ยกเลิก</button>
-                    </div>
-                  </form>
-                ) : (
-                  <>
-                    <p className="text-sm font-medium text-blue-700">รีวิวโดย: {rev.userName || "ไม่ระบุชื่อ"}</p>
-                    <div className="grid grid-cols-2 gap-1 text-sm text-gray-800 mb-1">
-                      <div className="flex items-center gap-1">
-                        <span>อร่อย:</span>
-                        <ReadOnlyStars value={rev.tasteRating} />
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <span>สะอาด:</span>
-                        <ReadOnlyStars value={rev.cleanlinessRating} />
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <span>รวดเร็ว:</span>
-                        <ReadOnlyStars value={rev.speedRating} />
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <span>คุ้มค่า:</span>
-                        <ReadOnlyStars value={rev.valueRating} />
-                      </div>
-                    </div>
-                    <p className="italic text-gray-700 mt-1">"{rev.comment}"</p>
-                    {user && (rev.userId === user.id || user.role === "admin") && (
-                      <div className="text-right text-sm">
-                        {/*  เฉพาะเจ้าของรีวิวเท่านั้นที่แก้ได้ */}
-                        {rev.userId === user.id && (
-                          <button
-                            className="text-blue-600 hover:underline mr-2"
-                            onClick={() => {
-                              setEditingReviewId(rev.id);
-                              setEditReviewData({
-                                tasteRating: rev.tasteRating,
-                                cleanlinessRating: rev.cleanlinessRating,
-                                speedRating: rev.speedRating,
-                                valueRating: rev.valueRating,
-                                comment: rev.comment
-                              });
-                            }}
-                          >
-                            แก้ไข
-                          </button>
-                        )}
-
-                        {/* ทั้งเจ้าของรีวิว และ admin ลบได้ */}
-                        <button
-                          onClick={() => handleDeleteReview(rev.id)}
-                          className="text-red-600 hover:underline">ลบรีวิวนี้</button>
-                      </div>
-                    )}
-
-                  </>
-                )}
-              </li>
-            ))}
-          </ul>
+        {restaurant.image && (
+          <img
+            src={`http://localhost:8080${restaurant.image}`}
+            alt={restaurant.name}
+            className="w-full h-72 object-cover rounded-xl shadow-md"
+          />
         )}
+
+        {restaurant.description && (
+          <p className="mt-4 text-gray-800 leading-relaxed">{restaurant.description}</p>
+        )}
+
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={() => setShowForm(!showForm)}
+            className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-xl font-medium shadow-md transition"
+          >
+            {showForm ? "ยกเลิกรีวิว" : "รีวิวร้านนี้"}
+          </button>
+        </div>
+
+        {showForm && (
+          <form onSubmit={handleSubmit} className="mt-6 space-y-4 border-t pt-6">
+            <h2 className="text-xl font-semibold text-gray-700">เขียนรีวิว</h2>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {[
+                { label: "คะแนนความอร่อย", key: "tasteRating" },
+                { label: "คะแนนความสะอาด", key: "cleanlinessRating" },
+                { label: "คะแนนความรวดเร็ว", key: "speedRating" },
+                { label: "คะแนนความคุ้มค่า", key: "valueRating" },
+              ].map(({ label, key }) => (
+                <div key={key}>
+                  <p className="font-medium text-gray-600">{label}</p>
+                  <StarRating
+                    rating={newReview[key]}
+                    onChange={(val) => setNewReview({ ...newReview, [key]: val })}
+                  />
+                </div>
+              ))}
+            </div>
+            <textarea
+              name="comment"
+              value={newReview.comment}
+              onChange={handleChange}
+              placeholder="เขียนความคิดเห็น..."
+              className="w-full p-3 border border-gray-300 rounded-xl shadow-sm"
+            />
+            <button
+              type="submit"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl shadow-md"
+            >
+              ส่งรีวิว
+            </button>
+          </form>
+        )}
+
+        <div className="mt-10 border-t pt-6">
+          <h3 className="text-xl font-semibold mb-4 text-gray-800">รีวิวทั้งหมด</h3>
+          {reviews.length === 0 ? (
+            <p className="text-gray-500">ยังไม่มีรีวิว</p>
+          ) : (
+            <div className="space-y-4">
+              {reviews.map((rev) => (
+                <div key={rev.id} className="bg-orange-50 p-4 rounded-xl shadow-sm">
+                  <p className="text-sm font-medium text-orange-600 mb-1">รีวิวโดย: {rev.userName || "ไม่ระบุชื่อ"}</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 text-sm gap-2 text-gray-800 mb-2">
+                    <div className="flex items-center gap-1"><span>อร่อย:</span><ReadOnlyStars value={rev.tasteRating} /></div>
+                    <div className="flex items-center gap-1"><span>สะอาด:</span><ReadOnlyStars value={rev.cleanlinessRating} /></div>
+                    <div className="flex items-center gap-1"><span>รวดเร็ว:</span><ReadOnlyStars value={rev.speedRating} /></div>
+                    <div className="flex items-center gap-1"><span>คุ้มค่า:</span><ReadOnlyStars value={rev.valueRating} /></div>
+                  </div>
+                  <p className="italic text-gray-700 mb-2">"{rev.comment}"</p>
+                  {user && (rev.userId === user.id || user.role === "admin") && (
+                    <div className="text-right text-sm">
+                      {rev.userId === user.id && (
+                        <button
+                          className="text-blue-600 hover:underline mr-3"
+                          onClick={() => {
+                            setEditingReviewId(rev.id);
+                            setEditReviewData({
+                              tasteRating: rev.tasteRating,
+                              cleanlinessRating: rev.cleanlinessRating,
+                              speedRating: rev.speedRating,
+                              valueRating: rev.valueRating,
+                              comment: rev.comment
+                            });
+                          }}
+                        >
+                          แก้ไข
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleDeleteReview(rev.id)}
+                        className="text-red-600 hover:underline"
+                      >
+                        ลบรีวิวนี้
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-    </div >
+    </div>
+
   );
 }
 
