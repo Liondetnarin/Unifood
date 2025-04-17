@@ -32,11 +32,11 @@ function LoginPage() {
         localStorage.setItem("role", user.role);
         localStorage.setItem("email", user.email);
 
-        alert("Login completed!");
+        alert("🎉 Login completed!");
         setIsLoggedIn(true);
         navigate("/");
       } else {
-        alert("Login failed");
+        alert("❌ Login failed");
         console.log("รายละเอียด:", user);
       }
     } catch (err) {
@@ -48,71 +48,75 @@ function LoginPage() {
   const handleLogout = () => {
     localStorage.clear();
     setIsLoggedIn(false);
-    alert("Logged out");
+    alert("👋 Logged out");
     navigate("/login");
   };
 
-  const goToSignup = () => {
-    navigate("/register");
-  };
-
-  const goToHome = () => {
-    navigate("/");
-  };
+  const goToSignup = () => navigate("/register");
+  const goToHome = () => navigate("/");
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-200">
-      <div className="text-center max-w-md w-full p-6 bg-white rounded-xl shadow-md">
-        <h2 className="text-2xl font-bold mb-6">
-          {isLoggedIn ? "Welcome Back!" : "Log In"}
+    <div className="flex items-center justify-center min-h-screen bg-orange-50">
+      <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
+        <h2 className="text-3xl font-bold text-center text-orange-600 mb-6">
+          {isLoggedIn ? "ยินดีต้อนรับกลับ 🎉" : "เข้าสู่ระบบ UniFood 🍽️"}
         </h2>
 
         <form onSubmit={handleLogin} className="space-y-4">
           {!isLoggedIn && (
             <>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="StudentID@unifood.com"
-                className="w-full p-3 border border-gray-300 rounded"
-                required
-              />
+              <div>
+                <label className="block text-left text-gray-700 mb-1">อีเมล</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="StudentID@unifood.com"
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-orange-400"
+                  required
+                />
+              </div>
 
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                className="w-full p-3 border border-gray-300 rounded"
-                required
-              />
+              <div>
+                <label className="block text-left text-gray-700 mb-1">รหัสผ่าน</label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="********"
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-orange-400"
+                  required
+                />
+              </div>
             </>
           )}
 
           <button
             type={isLoggedIn ? "button" : "submit"}
             onClick={isLoggedIn ? handleLogout : undefined}
-            className={`w-full ${isLoggedIn ? "bg-red-600 hover:bg-red-700" : "bg-blue-600 hover:bg-blue-700"
+            className={`w-full ${isLoggedIn ? "bg-red-500 hover:bg-red-600" : "bg-orange-500 hover:bg-orange-600"
               } text-white font-semibold py-2 rounded transition`}
           >
-            {isLoggedIn ? "Log Out" : "Log In"}
+            {isLoggedIn ? "ออกจากระบบ" : "เข้าสู่ระบบ"}
           </button>
 
           <button
             onClick={goToHome}
             type="button"
-            className="w-full bg-red-600 text-white font-semibold py-2 rounded hover:bg-red-700 transition"
+            className="w-full bg-gray-300 text-gray-800 font-semibold py-2 rounded hover:bg-gray-400 transition"
           >
-            Cancel
+            ยกเลิก
           </button>
 
           {!isLoggedIn && (
-            <div
-              className="text-blue-600 cursor-pointer hover:underline transition text-center mt-4"
-              onClick={goToSignup}
-            >
-              Sign Up
+            <div className="text-center">
+              <span className="text-gray-700">ยังไม่มีบัญชีใช่ไหม? </span>
+              <button
+                onClick={goToSignup}
+                className="text-orange-500 font-semibold hover:underline"
+              >
+                สมัครสมาชิก
+              </button>
             </div>
           )}
         </form>

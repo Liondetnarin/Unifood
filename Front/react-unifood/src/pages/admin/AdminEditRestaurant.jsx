@@ -13,16 +13,13 @@ function AdminEditRestaurant() {
     image: "",
   });
 
-  // ใช้เก็บไฟล์รูปภาพ
   const [imageFile, setImageFile] = useState(null);
 
   const handleChange = (e) => {
     setRestaurant({ ...restaurant, [e.target.name]: e.target.value });
   };
 
-  // โหลดข้อมูลร้านเดิม
   useEffect(() => {
-
     fetch(`/api/restaurants/${id}`)
       .then((res) => res.json())
       .then((data) => setRestaurant(data))
@@ -31,7 +28,7 @@ function AdminEditRestaurant() {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setImageFile(file); // ไฟล์ใหม่
+    setImageFile(file);
   };
 
   const handleSubmit = (e) => {
@@ -60,30 +57,40 @@ function AdminEditRestaurant() {
       .catch((err) => console.error("แก้ไขไม่สำเร็จ:", err));
   };
 
-  // ฟังก์ชันสำหรับล้างข้อมูลในฟอร์ม
   const handleClear = () => {
     if (!window.confirm("ยืนยันการล้างข้อมูล?")) return;
-    setRestaurant({ name: "", category: "", location: "" });
+    setRestaurant({
+      name: "",
+      category: "",
+      description: "",
+      location: "",
+      image: "",
+    });
+    setImageFile(null);
   };
 
   const handleCancel = (e) => {
     if (!window.confirm("ยืนยันการยกเลิก? \nระบบจะพาคุณไปสู่หน้าหลัก")) return;
     e.preventDefault();
-    navigate("/"); // กลับไปยังหน้าหลักหรือหน้าที่ต้องการ
+    navigate("/");
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4 sm:px-6 md:px-10 bg-gray-200">
-      
-      <form onSubmit={handleSubmit} className="space-y-4 p-4 rounded shadow-md w-full max-w-md bg-white">
+    <div className="min-h-screen bg-gradient-to-r from-yellow-100 via-orange-100 to-yellow-100 flex items-center justify-center py-10 px-4">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-lg bg-white rounded-2xl shadow-xl p-8 space-y-5"
+      >
+        <h2 className="text-3xl font-bold text-center text-orange-600 mb-4">
+          ✏ แก้ไขข้อมูลร้านอาหาร
+        </h2>
 
-      <h2 className="text-2xl font-bold text-center">แก้ไขร้านอาหาร</h2>
         <input
           name="name"
           value={restaurant.name}
           onChange={handleChange}
           placeholder="ชื่อร้าน"
-          className="w-full p-2 border rounded"
+          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
           required
         />
 
@@ -91,10 +98,10 @@ function AdminEditRestaurant() {
           name="category"
           value={restaurant.category}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
           required
         >
-          <option value="">-- Select a category --</option>
+          <option value="">-- เลือกหมวดหมู่ --</option>
           <option value="Food">Food</option>
           <option value="Dessert">Dessert</option>
           <option value="Drink">Drink</option>
@@ -104,10 +111,10 @@ function AdminEditRestaurant() {
         <input
           type="text"
           name="description"
-          placeholder="รายละเอียดอาหารเพิ่มเติม"
+          placeholder="รายละเอียดเพิ่มเติม"
           value={restaurant.description}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
           required
         />
 
@@ -115,59 +122,60 @@ function AdminEditRestaurant() {
           name="location"
           value={restaurant.location}
           onChange={handleChange}
-          placeholder="ที่ตั้ง"
-          className="w-full p-2 border rounded"
+          placeholder="ที่ตั้งร้าน"
+          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
           required
         />
-        
+
         <input
           type="file"
           accept="image/*"
           onChange={handleFileChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border border-gray-300 rounded-xl"
         />
 
-        {/* Preview */}
+        {/* รูป Preview */}
         {imageFile ? (
           <img
             src={URL.createObjectURL(imageFile)}
-            alt="Preview"
-            className="w-full h-[250px] object-cover rounded-xl"
+            alt="รูปใหม่"
+            className="w-full h-64 object-cover rounded-xl border"
           />
         ) : (
           restaurant.image && (
             <img
               srcSet={`http://localhost:8080${restaurant.image}`}
               alt="รูปเดิม"
-              className="w-full h-[250px] object-cover rounded-xl"
+              className="w-full h-64 object-cover rounded-xl border"
             />
           )
         )}
-        
-        <div className="flex justify-end space-x-2 mb-4">
+
+        {/* ปุ่มต่าง ๆ */}
+        <div className="flex flex-col space-y-3 pt-2">
           <button
-            type="reset"
-            onClick={handleClear}
-            className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+            type="submit"
+            className="bg-green-600 text-white py-3 rounded-xl hover:bg-green-700 transition"
           >
-            ล้างข้อมูล
+            ✅ บันทึกการแก้ไข
+          </button>
+
+          <button
+            type="button"
+            onClick={handleClear}
+            className="bg-gray-500 text-white py-3 rounded-xl hover:bg-gray-600 transition"
+          >
+            🧹 ล้างข้อมูล
+          </button>
+
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="bg-red-500 text-white py-3 rounded-xl hover:bg-red-600 transition"
+          >
+            ❌ ยกเลิก
           </button>
         </div>
-
-        <button
-          type="submit"
-          className="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-        >
-          บันทึกการแก้ไข
-        </button>
-
-        <button
-          type="button"
-          onClick={handleCancel}
-          className="w-full bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-        >
-          ยกเลิก
-        </button>
       </form>
     </div>
   );

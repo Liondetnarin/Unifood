@@ -5,16 +5,17 @@ function RegisterPage() {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const goToHome = () => {
-        navigate("/");
-    };
-
-    const goToLogin = () => {
-        navigate("/login");
-      };
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [isRegistered, setIsRegistered] = useState(false);
 
     const handleRegister = async (e) => {
         e.preventDefault();
+
+        // ตรวจสอบว่า รหัสผ่านและยืนยันรหัสผ่านตรงกันไหม
+        if (password !== confirmPassword) {
+            alert("รหัสผ่านไม่ตรงกัน");
+            return;
+        }
 
         try {
             const res = await fetch("/api/auth/register", {
@@ -26,64 +27,97 @@ function RegisterPage() {
             const user = await res.json();
 
             if (res.ok) {
-                localStorage.setItem("user", JSON.stringify(user)); // เก็บทั้ง object
-                localStorage.setItem("userId", user.id);
-                localStorage.setItem("role", user.role);
-                localStorage.setItem("email", user.email);
-
-                alert("Login completed!");
-                navigate("/"); // กลับหน้าหลัก
+                alert("🎉 การสมัครสมาชิกเสร็จสมบูรณ์!");
+                setIsRegistered(true);
+                navigate("/login"); // พาไปที่หน้าล็อกอิน
             } else {
-                alert("Login failed");
+                alert("❌ การสมัครสมาชิกล้มเหลว");
                 console.log("รายละเอียด:", user);
             }
         } catch (err) {
-            console.error("register Error:", err);
+            console.error("Register Error:", err);
             alert("เกิดข้อผิดพลาด");
         }
     };
 
+    const goToLogin = () => navigate("/login");
+    const goToHome = () => navigate("/");
+
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-200">
-            <div className="text-center max-w-md w-full p-6 bg-white rounded-xl shadow-md">
-                <h2 className="text-2xl font-bold mb-6">Sign Up</h2>
+        <div className="flex items-center justify-center min-h-screen bg-orange-50">
+            <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
+                <h2 className="text-3xl font-bold text-center text-orange-600 mb-6">
+                    {isRegistered ? "ยินดีต้อนรับสู่ UniFood 🎉" : "สมัครสมาชิก UniFood 🍽️"}
+                </h2>
+
                 <form onSubmit={handleRegister} className="space-y-4">
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="StudentID@unifood.com"
-                        className="w-full p-3 border border-gray-300 rounded"
-                        required
-                    />
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Password"
-                        className="w-full p-3 border border-gray-300 rounded"
-                        required
-                    />
+                    {!isRegistered && (
+                        <>
+                            <div>
+                                <label className="block text-left text-gray-700 mb-1">อีเมล</label>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="StudentID@unifood.com"
+                                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-orange-400"
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-left text-gray-700 mb-1">รหัสผ่าน</label>
+                                <input
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="********"
+                                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-orange-400"
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-left text-gray-700 mb-1">ยืนยันรหัสผ่าน</label>
+                                <input
+                                    type="password"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    placeholder="********"
+                                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-orange-400"
+                                    required
+                                />
+                            </div>
+                        </>
+                    )}
+
                     <button
-                        type="submit"
-                        className="w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition"
+                        type={isRegistered ? "button" : "submit"}
+                        className={`w-full ${isRegistered ? "bg-green-500 hover:bg-green-600" : "bg-orange-500 hover:bg-orange-600"
+                            } text-white font-semibold py-2 rounded transition`}
                     >
-                        Sign Up
+                        {isRegistered ? "กลับไปที่หน้าเข้าสู่ระบบ" : "สมัครสมาชิก"}
                     </button>
+
                     <button
                         onClick={goToHome}
-                        className="w-full bg-red-600 text-white font-semibold py-2 rounded hover:bg-red-700 transition"
+                        type="button"
+                        className="w-full bg-gray-300 text-gray-800 font-semibold py-2 rounded hover:bg-gray-400 transition"
                     >
-                        Cancel
+                        ยกเลิก
                     </button>
 
-                    <div
-                        className="text-blue-600 cursor-pointer hover:underline transition text-center mt-4"
-                        onClick={goToLogin}
-                    >
-                        Log In
-
-                    </div>
+                    {!isRegistered && (
+                        <div className="text-center">
+                            <span className="text-gray-700">มีบัญชีอยู่แล้ว? </span>
+                            <button
+                                onClick={goToLogin}
+                                className="text-orange-500 font-semibold hover:underline"
+                            >
+                                เข้าสู่ระบบ
+                            </button>
+                        </div>
+                    )}
                 </form>
             </div>
         </div>

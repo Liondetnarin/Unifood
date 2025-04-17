@@ -25,56 +25,62 @@ function AdminRestaurantList() {
   };
 
   return (
-    <div className="bg-gray-200 min-h-screen flex items-center justify-center">
-    <div className="max-w-5xl mx-auto p-6">
-      <nav className="mb-4">
-        <Link to="/" className="text-red-600 hover:underline mr-4 hover:text-red-500">
-          หน้าหลัก
-        </Link>
-        <Link to="/admin/add-restaurant" className="text-blue-600 hover:underline">
-          เพิ่มร้านอาหาร
-        </Link>
-      </nav>
-      <h2 className="text-xl font-bold mb-4">รายการร้านอาหาร</h2>
+    <div className="bg-gradient-to-b from-orange-100 to-yellow-100 min-h-screen p-6">
+      <div className="max-w-5xl mx-auto">
+        <nav className="flex justify-between mb-6">
+          <Link to="/" className="text-orange-700 font-semibold hover:underline">
+            ⬅ กลับหน้าหลัก
+          </Link>
+          <Link
+            to="/admin/add-restaurant"
+            className="bg-blue-600 text-white px-4 py-2 rounded-xl shadow hover:bg-blue-700"
+          >
+            ➕ เพิ่มร้านอาหาร
+          </Link>
+        </nav>
 
-      {restaurants.length === 0 ? (
-        <p>ไม่มีร้านอาหาร</p>
-      ) : (
-        <table className="w-full table-auto border rounded-lg shadow-md bg-white">
-          <thead className="bg-white">
-            <tr>
-              <th className="border p-2">ชื่อร้าน</th>
-              <th className="border p-2">หมวดหมู่</th>
-              <th className="border p-2">การจัดการ</th>
-            </tr>
-          </thead>
-          <tbody>
+        <h2 className="text-2xl font-bold text-orange-700 mb-4 text-center">รายการร้านอาหารทั้งหมด</h2>
+
+        {restaurants.length === 0 ? (
+          <p className="text-center text-gray-600">ยังไม่มีร้านอาหารในระบบ</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {restaurants.map((r) => (
-              <tr key={r.id}>
-                <td className="border p-2">{r.name}</td>
-                <td className="border p-2">{r.category}</td>
-                <td className="border p-2 text-right">
-                  
+              <div
+                key={r.id}
+                className="bg-white rounded-2xl shadow-md p-6 flex flex-col justify-between"
+              >
+                <div>
+                  <h3 className="text-xl font-bold text-gray-800">{r.name}</h3>
+                  <p className="text-gray-600 mb-4">หมวดหมู่: {r.category}</p>
+                  {r.image && (
+                    <img
+                      src={`http://localhost:8080${r.image}`}
+                      alt={r.name}
+                      className="w-full h-[250px] object-cover rounded-lg mb-4"
+                    />
+                  )}
+                </div>
+
+                <div className="flex justify-end space-x-3">
                   <Link
                     to={`/admin/edit-restaurant/${r.id}`}
-                    className="text-blue-600 hover:underline"
+                    className="bg-yellow-400 text-white px-4 py-1 rounded-xl hover:bg-yellow-500 transition"
                   >
-                    แก้ไข
+                    ✏ แก้ไข
                   </Link>
-
                   <button
                     onClick={() => handleDelete(r.id)}
-                    className="text-red-600 hover:underline"
+                    className="bg-red-500 text-white px-4 py-1 rounded-xl hover:bg-red-600 transition"
                   >
-                    ลบ
+                    🗑 ลบ
                   </button>
-                </td>
-              </tr>
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
-      )}
-    </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

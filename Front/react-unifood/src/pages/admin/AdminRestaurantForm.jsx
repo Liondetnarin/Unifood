@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function AdminRestaurantForm() {
-  const navigate = useNavigate(); // ใช้ useNavigate เพื่อเปลี่ยนเส้นทางหลังจากส่งข้อมูล
+  const navigate = useNavigate();
 
   const [restaurant, setRestaurant] = useState({
     name: "",
@@ -11,7 +11,6 @@ function AdminRestaurantForm() {
     location: "",
   });
 
-  // ใช้เก็บไฟล์รูปภาพ
   const [imageFile, setImageFile] = useState(null);
 
   const handleChange = (e) => {
@@ -31,7 +30,7 @@ function AdminRestaurantForm() {
     data.append("description", restaurant.description);
     data.append("location", restaurant.location);
     if (imageFile) {
-      data.append("image", imageFile); // แนบไฟล์รูปภาพ
+      data.append("image", imageFile);
     }
 
     fetch("/api/restaurants", {
@@ -40,47 +39,47 @@ function AdminRestaurantForm() {
     })
       .then((res) => res.json())
       .then(() => {
-
         alert("เพิ่มร้านสำเร็จ!");
-        setRestaurant({ name: "", category: "", location: "" });
+        setRestaurant({ name: "", category: "", description: "", location: "" });
         setImageFile(null);
-
-        navigate("/"); // เปลี่ยนเส้นทางไปยังหน้ารายการร้านอาหารหลังจากเพิ่มสำเร็จ
+        navigate("/");
       })
-
       .catch((err) => {
         console.error("❌ Error:", err);
         alert("เกิดข้อผิดพลาด");
-
       });
   };
 
-  // ฟังก์ชันสำหรับล้างข้อมูลในฟอร์ม
   const handleClear = () => {
     if (!window.confirm("ยืนยันการล้างข้อมูล?")) return;
-    setRestaurant({ name: "", category: "", location: "" });
+    setRestaurant({ name: "", category: "", description: "", location: "" });
+    setImageFile(null);
   };
 
   const handleCancel = (e) => {
     if (!window.confirm("ยืนยันการยกเลิก? \nระบบจะพาคุณไปสู่หน้าหลัก")) return;
     e.preventDefault();
-    navigate("/"); // กลับไปยังหน้าหลักหรือหน้าที่ต้องการ
+    navigate("/");
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4 sm:px-6 md:px-10 bg-gray-200">
+    <div className="min-h-screen bg-gradient-to-r from-yellow-100 via-orange-100 to-yellow-200 flex items-center justify-center px-4 py-10">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-lg bg-white rounded-2xl shadow-xl p-8 space-y-5"
+      >
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-orange-600">🍜 เพิ่มร้านอาหาร</h1>
+          <p className="text-gray-500 mt-1">กรอกข้อมูลร้านอาหารใหม่ด้านล่าง</p>
+        </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4 p-4 rounded shadow-md w-full max-w-md bg-white">
-
-        <h1 className="text-2xl font-bold text-center">เพิ่มร้านอาหาร</h1>
-        <p className="text-gray-600 text-center">กรุณากรอกข้อมูลร้านอาหาร</p>
         <input
           type="text"
           name="name"
           placeholder="ชื่อร้าน"
           value={restaurant.name}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
           required
         />
 
@@ -88,10 +87,10 @@ function AdminRestaurantForm() {
           name="category"
           value={restaurant.category}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
           required
         >
-          <option value="">-- Select a category --</option>
+          <option value="">-- เลือกหมวดหมู่ --</option>
           <option value="Food">Food</option>
           <option value="Dessert">Dessert</option>
           <option value="Drink">Drink</option>
@@ -101,20 +100,20 @@ function AdminRestaurantForm() {
         <input
           type="text"
           name="description"
-          placeholder="รายละเอียดอาหารเพิ่มเติม"
+          placeholder="รายละเอียดเพิ่มเติม"
           value={restaurant.description}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
           required
         />
 
         <input
           type="text"
           name="location"
-          placeholder="ที่ตั้ง (เช่น อาคาร 25)"
+          placeholder="ที่ตั้งร้าน เช่น อาคาร 25"
           value={restaurant.location}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
           required
         />
 
@@ -122,7 +121,7 @@ function AdminRestaurantForm() {
           type="file"
           accept="image/*"
           onChange={handleFileChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border border-gray-300 rounded-xl"
           required
         />
 
@@ -130,38 +129,36 @@ function AdminRestaurantForm() {
           <img
             src={URL.createObjectURL(imageFile)}
             alt="Preview"
-            className="w-full h-[250px] object-cover rounded-xl"
+            className="w-full h-64 object-cover rounded-xl border mt-2"
           />
         )}
 
-        <div className="flex justify-end space-x-2 mb-4">
+        <div className="flex flex-col space-y-3 pt-2">
+          <button
+            type="submit"
+            className="bg-green-600 text-white py-3 rounded-xl hover:bg-green-700 transition"
+          >
+            ✅ บันทึก
+          </button>
+
           <button
             type="reset"
             onClick={handleClear}
-            className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+            className="bg-gray-500 text-white py-3 rounded-xl hover:bg-gray-600 transition"
           >
-            ล้างข้อมูล
+            🧹 ล้างข้อมูล
+          </button>
+
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="bg-red-500 text-white py-3 rounded-xl hover:bg-red-600 transition"
+          >
+            ❌ ยกเลิก
           </button>
         </div>
-
-        <button
-          type="submit"
-          className="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-        >
-          บันทึก
-        </button>
-
-        <button
-          type="button"
-          onClick={handleCancel}
-          className="w-full bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-        >
-          ยกเลิก
-        </button>
-
       </form>
     </div>
-
   );
 }
 

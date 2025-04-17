@@ -257,7 +257,7 @@ function App() {
 
   return (
 
-    <div className="min-h-screen w-full bg-gray-200 p-6">
+    <div className="min-h-screen w-full bg-orange-50 p-6">
 
       <nav className="mb-8 bg-yellow-400 shadow-md p-4 mb-6 rounded-lg">
 

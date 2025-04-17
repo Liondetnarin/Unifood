@@ -214,7 +214,52 @@ function RestaurantDetail() {
                     <div className="flex items-center gap-1"><span>รวดเร็ว:</span><ReadOnlyStars value={rev.speedRating} /></div>
                     <div className="flex items-center gap-1"><span>คุ้มค่า:</span><ReadOnlyStars value={rev.valueRating} /></div>
                   </div>
-                  <p className="italic text-gray-700 mb-2">"{rev.comment}"</p>
+                  {editingReviewId === rev.id ? (
+                    <form onSubmit={(e) => handleUpdateReview(e, rev.id)} className="space-y-2">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm">
+                        {[
+                          { key: "tasteRating", label: "อร่อย" },
+                          { key: "cleanlinessRating", label: "สะอาด" },
+                          { key: "speedRating", label: "รวดเร็ว" },
+                          { key: "valueRating", label: "คุ้มค่า" }
+                        ].map(({ key, label }) => (
+                          <div key={key}>
+                            <p className="text-xs text-gray-600">{label}</p>
+                            <StarRating
+                              rating={editReviewData[key]}
+                              onChange={(val) =>
+                                setEditReviewData({ ...editReviewData, [key]: val })
+                              }
+                            />
+                          </div>
+                        ))}
+                      </div>
+                      <textarea
+                        name="comment"
+                        value={editReviewData.comment}
+                        onChange={handleEditChange}
+                        className="w-full border p-2 rounded-md text-sm"
+                      />
+                      <div className="flex justify-end gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setEditingReviewId(null)}
+                          className="text-gray-500 text-sm hover:underline"
+                        >
+                          ยกเลิก
+                        </button>
+                        <button
+                          type="submit"
+                          className="text-blue-600 text-sm hover:underline"
+                        >
+                          บันทึก
+                        </button>
+                      </div>
+                    </form>
+                  ) : (
+                    <p className="italic text-gray-700 mb-2">"{rev.comment}"</p>
+                  )}
+
                   {user && (rev.userId === user.id || user.role === "admin") && (
                     <div className="text-right text-sm">
                       {rev.userId === user.id && (
