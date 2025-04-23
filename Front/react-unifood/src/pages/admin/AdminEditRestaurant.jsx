@@ -76,13 +76,13 @@ function AdminEditRestaurant() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-yellow-100 via-orange-100 to-yellow-100 flex items-center justify-center py-10 px-4">
+    <div className="min-h-screen bg-gradient-to-r from-yellow-100 via-yellow-100 to-yellow-100 flex items-center justify-center py-10 px-4">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-lg bg-white rounded-2xl shadow-xl p-8 space-y-5"
       >
-        <h2 className="text-3xl font-bold text-center text-orange-600 mb-4">
-          ✏ แก้ไขข้อมูลร้านอาหาร
+        <h2 className="text-3xl font-bold text-center text-yellow-600 mb-4">
+          แก้ไขข้อมูลร้านอาหาร
         </h2>
 
         <input
@@ -90,7 +90,7 @@ function AdminEditRestaurant() {
           value={restaurant.name}
           onChange={handleChange}
           placeholder="ชื่อร้าน"
-          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
+          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400"
           required
         />
 
@@ -98,7 +98,7 @@ function AdminEditRestaurant() {
           name="category"
           value={restaurant.category}
           onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
+          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400"
           required
         >
           <option value="">-- เลือกหมวดหมู่ --</option>
@@ -114,7 +114,7 @@ function AdminEditRestaurant() {
           placeholder="รายละเอียดเพิ่มเติม"
           value={restaurant.description}
           onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
+          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400"
           required
         />
 
@@ -123,7 +123,7 @@ function AdminEditRestaurant() {
           value={restaurant.location}
           onChange={handleChange}
           placeholder="ที่ตั้งร้าน"
-          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
+          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400"
           required
         />
 
@@ -157,7 +157,7 @@ function AdminEditRestaurant() {
             type="submit"
             className="bg-green-600 text-white py-3 rounded-xl hover:bg-green-700 transition"
           >
-            ✅ บันทึกการแก้ไข
+            บันทึกการแก้ไข
           </button>
 
           <button
@@ -165,7 +165,7 @@ function AdminEditRestaurant() {
             onClick={handleClear}
             className="bg-gray-500 text-white py-3 rounded-xl hover:bg-gray-600 transition"
           >
-            🧹 ล้างข้อมูล
+            ล้างข้อมูล
           </button>
 
           <button
@@ -173,7 +173,7 @@ function AdminEditRestaurant() {
             onClick={handleCancel}
             className="bg-red-500 text-white py-3 rounded-xl hover:bg-red-600 transition"
           >
-            ❌ ยกเลิก
+            ยกเลิก
           </button>
         </div>
       </form>

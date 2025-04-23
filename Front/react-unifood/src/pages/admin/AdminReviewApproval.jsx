@@ -7,7 +7,7 @@ function AdminReviewApproval() {
   if (!user || user.role !== "admin") {
     return (
       <div className="p-10 text-center text-red-600 font-semibold text-xl">
-        ❌ คุณไม่มีสิทธิ์เข้าถึงหน้านี้
+        คุณไม่มีสิทธิ์เข้าถึงหน้านี้
       </div>
     );
   }
@@ -35,10 +35,10 @@ function AdminReviewApproval() {
     });
 
     if (res.ok) {
-      alert("✅ อนุมัติเรียบร้อยแล้ว");
+      alert("อนุมัติเรียบร้อยแล้ว");
       fetchPendingReviews();
     } else {
-      alert("❌ อนุมัติไม่สำเร็จ");
+      alert("อนุมัติไม่สำเร็จ");
     }
   };
 
@@ -51,33 +51,33 @@ function AdminReviewApproval() {
     });
 
     if (res.ok) {
-      alert("🗑️ ลบเรียบร้อยแล้ว");
+      alert(" ลบเรียบร้อยแล้ว");
       fetchPendingReviews();
     } else {
-      alert("❌ ลบไม่สำเร็จ");
+      alert(" ลบไม่สำเร็จ");
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-orange-50 via-yellow-50 to-pink-100 py-10 px-4">
+    <div className="min-h-screen bg-gradient-to-tr from-yellow-50 via-yellow-50 to-yellow-100 py-10 px-4">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl font-bold text-center text-orange-600 mb-8">
-          📝 รีวิวที่รออนุมัติ
+        <h2 className="text-3xl font-bold text-center text-yellow-600 mb-8">
+          รีวิวที่รออนุมัติ
         </h2>
 
         {reviews.length === 0 ? (
           <p className="text-center text-gray-600 text-lg">
-            ✨ ไม่มีรีวิวที่รออนุมัติในขณะนี้
+            ไม่มีรีวิวที่รออนุมัติในขณะนี้
           </p>
         ) : (
           <ul className="space-y-6">
             {reviews.map((rev) => (
               <li
                 key={rev.id}
-                className="bg-white shadow-md rounded-xl p-5 border-l-4 border-orange-400"
+                className="bg-white shadow-md rounded-xl p-5 border-l-4 border-yellow-400"
               >
                 <div className="mb-2 flex justify-between items-center">
-                  <p className="text-lg font-semibold text-orange-600">
+                  <p className="text-lg font-semibold text-yellow-600">
                     👤 {rev.userName || "ไม่ระบุชื่อ"}
                   </p>
                   <span className="text-sm text-gray-400">
@@ -90,7 +90,7 @@ function AdminReviewApproval() {
                   เร็ว: {rev.speedRating} | คุ้มค่า: {rev.valueRating}
                 </p>
 
-                <p className="italic text-gray-800 bg-orange-50 p-3 rounded-md">
+                <p className="italic text-gray-800 bg-yellow-50 p-3 rounded-md">
                   “{rev.comment}”
                 </p>
 
@@ -99,13 +99,13 @@ function AdminReviewApproval() {
                     onClick={() => handleApprove(rev.id)}
                     className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
                   >
-                    ✅ อนุมัติ
+                    อนุมัติ
                   </button>
                   <button
                     onClick={() => handleDelete(rev.id)}
                     className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
                   >
-                    🗑️ ลบ
+                    ลบ
                   </button>
                 </div>
               </li>

@@ -44,10 +44,10 @@ function RegisterPage() {
     const goToHome = () => navigate("/");
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-orange-50">
+        <div className="flex items-center justify-center min-h-screen bg-yellow-50">
             <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
-                <h2 className="text-3xl font-bold text-center text-orange-600 mb-6">
-                    {isRegistered ? "ยินดีต้อนรับสู่ UniFood 🎉" : "สมัครสมาชิก UniFood 🍽️"}
+                <h2 className="text-3xl font-bold text-center text-yellow-600 mb-6">
+                    {isRegistered ? "ยินดีต้อนรับสู่ UniFood " : "สมัครสมาชิก UniFood "}
                 </h2>
 
                 <form onSubmit={handleRegister} className="space-y-4">
@@ -60,7 +60,7 @@ function RegisterPage() {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="StudentID@unifood.com"
-                                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-orange-400"
+                                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-yellow-400"
                                     required
                                 />
                             </div>
@@ -72,7 +72,7 @@ function RegisterPage() {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="********"
-                                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-orange-400"
+                                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-yellow-400"
                                     required
                                 />
                             </div>
@@ -84,7 +84,7 @@ function RegisterPage() {
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     placeholder="********"
-                                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-orange-400"
+                                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-yellow-400"
                                     required
                                 />
                             </div>
@@ -93,7 +93,7 @@ function RegisterPage() {
 
                     <button
                         type={isRegistered ? "button" : "submit"}
-                        className={`w-full ${isRegistered ? "bg-green-500 hover:bg-green-600" : "bg-orange-500 hover:bg-orange-600"
+                        className={`w-full ${isRegistered ? "bg-green-500 hover:bg-green-600" : "bg-yellow-500 hover:bg-yellow-600"
                             } text-white font-semibold py-2 rounded transition`}
                     >
                         {isRegistered ? "กลับไปที่หน้าเข้าสู่ระบบ" : "สมัครสมาชิก"}
@@ -112,7 +112,7 @@ function RegisterPage() {
                             <span className="text-gray-700">มีบัญชีอยู่แล้ว? </span>
                             <button
                                 onClick={goToLogin}
-                                className="text-orange-500 font-semibold hover:underline"
+                                className="text-yellow-500 font-semibold hover:underline"
                             >
                                 เข้าสู่ระบบ
                             </button>

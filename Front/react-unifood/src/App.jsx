@@ -13,7 +13,7 @@ function App() {
     fetch("/api/restaurants")
       .then((res) => res.json())
       .then((data) => {
-        console.log("📦 data from backend:", data);
+        console.log(" data from backend:", data);
         setRestaurants(data);
       })
       .catch((err) => console.error("Error fetching:", err));
@@ -60,11 +60,11 @@ function App() {
         return res.json();
       })
       .then((data) => {
-        console.log("🔍 ผลลัพธ์ที่ค้นหา:", data);
+        console.log(" ผลลัพธ์ที่ค้นหา:", data);
         setRestaurants(Array.isArray(data) ? data : []);
       })
       .catch((err) => {
-        console.error("❌ ค้นหาไม่สำเร็จ:", err);
+        console.error(" ค้นหาไม่สำเร็จ:", err);
         setRestaurants([]); // ป้องกัน .sort() error
       });
   };
@@ -257,7 +257,7 @@ function App() {
 
   return (
 
-    <div className="min-h-screen w-full bg-orange-50 p-6">
+    <div className="min-h-screen w-full bg-yellow-50 p-6">
 
       <nav className="mb-8 bg-yellow-400 shadow-md p-4 mb-6 rounded-lg">
 

@@ -138,9 +138,9 @@ function RestaurantDetail() {
   if (!restaurant) return <div className="p-6">กำลังโหลดข้อมูลร้าน...</div>;
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-orange-100 to-yellow-100 p-6">
+    <div className="min-h-screen w-full bg-gradient-to-b from-yellow-100 to-yellow-100 p-6">
       <div className="max-w-3xl mx-auto bg-white shadow-xl rounded-2xl p-6">
-        <h1 className="text-3xl font-bold text-center text-orange-600">{restaurant.name}</h1>
+        <h1 className="text-3xl font-bold text-center text-yellow-600">{restaurant.name}</h1>
         <p className="text-gray-600 text-center mb-4">{restaurant.category} · {restaurant.location}</p>
 
         {restaurant.image && (
@@ -206,8 +206,8 @@ function RestaurantDetail() {
           ) : (
             <div className="space-y-4">
               {reviews.map((rev) => (
-                <div key={rev.id} className="bg-orange-50 p-4 rounded-xl shadow-sm">
-                  <p className="text-sm font-medium text-orange-600 mb-1">รีวิวโดย: {rev.userName || "ไม่ระบุชื่อ"}</p>
+                <div key={rev.id} className="bg-yellow-50 p-4 rounded-xl shadow-sm">
+                  <p className="text-sm font-medium text-yellow-600 mb-1">รีวิวโดย: {rev.userName || "ไม่ระบุชื่อ"}</p>
                   <div className="grid grid-cols-2 sm:grid-cols-4 text-sm gap-2 text-gray-800 mb-2">
                     <div className="flex items-center gap-1"><span>อร่อย:</span><ReadOnlyStars value={rev.tasteRating} /></div>
                     <div className="flex items-center gap-1"><span>สะอาด:</span><ReadOnlyStars value={rev.cleanlinessRating} /></div>

@@ -32,11 +32,11 @@ function LoginPage() {
         localStorage.setItem("role", user.role);
         localStorage.setItem("email", user.email);
 
-        alert("🎉 Login completed!");
+        alert(" Login completed!");
         setIsLoggedIn(true);
         navigate("/");
       } else {
-        alert("❌ Login failed");
+        alert(" Login failed");
         console.log("รายละเอียด:", user);
       }
     } catch (err) {
@@ -48,7 +48,7 @@ function LoginPage() {
   const handleLogout = () => {
     localStorage.clear();
     setIsLoggedIn(false);
-    alert("👋 Logged out");
+    alert(" Logged out");
     navigate("/login");
   };
 
@@ -56,10 +56,10 @@ function LoginPage() {
   const goToHome = () => navigate("/");
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-orange-50">
+    <div className="flex items-center justify-center min-h-screen bg-yellow-50">
       <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
-        <h2 className="text-3xl font-bold text-center text-orange-600 mb-6">
-          {isLoggedIn ? "ยินดีต้อนรับกลับ 🎉" : "เข้าสู่ระบบ UniFood 🍽️"}
+        <h2 className="text-3xl font-bold text-center text-yellow-600 mb-6">
+          {isLoggedIn ? "ยินดีต้อนรับกลับ " : "เข้าสู่ระบบ UniFood "}
         </h2>
 
         <form onSubmit={handleLogin} className="space-y-4">
@@ -72,7 +72,7 @@ function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="StudentID@unifood.com"
-                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-orange-400"
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-yellow-400"
                   required
                 />
               </div>
@@ -84,7 +84,7 @@ function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="********"
-                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-orange-400"
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-yellow-400"
                   required
                 />
               </div>
@@ -94,7 +94,7 @@ function LoginPage() {
           <button
             type={isLoggedIn ? "button" : "submit"}
             onClick={isLoggedIn ? handleLogout : undefined}
-            className={`w-full ${isLoggedIn ? "bg-red-500 hover:bg-red-600" : "bg-orange-500 hover:bg-orange-600"
+            className={`w-full ${isLoggedIn ? "bg-red-500 hover:bg-red-600" : "bg-yellow-500 hover:bg-yellow-600"
               } text-white font-semibold py-2 rounded transition`}
           >
             {isLoggedIn ? "ออกจากระบบ" : "เข้าสู่ระบบ"}
@@ -113,7 +113,7 @@ function LoginPage() {
               <span className="text-gray-700">ยังไม่มีบัญชีใช่ไหม? </span>
               <button
                 onClick={goToSignup}
-                className="text-orange-500 font-semibold hover:underline"
+                className="text-yellow-500 font-semibold hover:underline"
               >
                 สมัครสมาชิก
               </button>

@@ -25,21 +25,21 @@ function AdminRestaurantList() {
   };
 
   return (
-    <div className="bg-gradient-to-b from-orange-100 to-yellow-100 min-h-screen p-6">
+    <div className="bg-gradient-to-b from-yellow-100 to-yellow-100 min-h-screen p-6">
       <div className="max-w-5xl mx-auto">
         <nav className="flex justify-between mb-6">
-          <Link to="/" className="text-orange-700 font-semibold hover:underline">
-            ⬅ กลับหน้าหลัก
+          <Link to="/" className="text-yellow-700 font-semibold hover:underline">
+            กลับหน้าหลัก
           </Link>
           <Link
             to="/admin/add-restaurant"
             className="bg-blue-600 text-white px-4 py-2 rounded-xl shadow hover:bg-blue-700"
           >
-            ➕ เพิ่มร้านอาหาร
+            เพิ่มร้านอาหาร
           </Link>
         </nav>
 
-        <h2 className="text-2xl font-bold text-orange-700 mb-4 text-center">รายการร้านอาหารทั้งหมด</h2>
+        <h2 className="text-2xl font-bold text-yellow-700 mb-4 text-center">รายการร้านอาหารทั้งหมด</h2>
 
         {restaurants.length === 0 ? (
           <p className="text-center text-gray-600">ยังไม่มีร้านอาหารในระบบ</p>
@@ -67,13 +67,13 @@ function AdminRestaurantList() {
                     to={`/admin/edit-restaurant/${r.id}`}
                     className="bg-yellow-400 text-white px-4 py-1 rounded-xl hover:bg-yellow-500 transition"
                   >
-                    ✏ แก้ไข
+                    แก้ไข
                   </Link>
                   <button
                     onClick={() => handleDelete(r.id)}
                     className="bg-red-500 text-white px-4 py-1 rounded-xl hover:bg-red-600 transition"
                   >
-                    🗑 ลบ
+                    ลบ
                   </button>
                 </div>
               </div>
