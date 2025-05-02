@@ -343,7 +343,7 @@ function App() {
               {isLoggedIn ? (
                 <div className="flex items-center gap-4">
                   <span className="text-gray-700 font-medium">
-                    {user.email}
+                    {user.name}
                   </span>
                   <button
                     onClick={handleLogout}
@@ -398,7 +398,6 @@ function App() {
 
         <p className="text-center text-gray-500">No restaurant information</p>
       ) : (
-
         <div className="max-w-6xl mx-auto">
 
           <h2 id="Recommend For You" className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6">Recommend For You</h2>

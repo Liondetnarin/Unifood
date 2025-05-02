@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
     const navigate = useNavigate();
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -21,17 +22,17 @@ function RegisterPage() {
             const res = await fetch("/api/auth/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({ name, email, password }),
             });
 
             const user = await res.json();
 
             if (res.ok) {
-                alert("🎉 การสมัครสมาชิกเสร็จสมบูรณ์!");
+                alert(" การสมัครสมาชิกเสร็จสมบูรณ์!");
                 setIsRegistered(true);
                 navigate("/login"); // พาไปที่หน้าล็อกอิน
             } else {
-                alert("❌ การสมัครสมาชิกล้มเหลว");
+                alert(" การสมัครสมาชิกล้มเหลว");
                 console.log("รายละเอียด:", user);
             }
         } catch (err) {
@@ -53,6 +54,17 @@ function RegisterPage() {
                 <form onSubmit={handleRegister} className="space-y-4">
                     {!isRegistered && (
                         <>
+                            <div>
+                                <label className="block text-left text-gray-700 mb-1">ชื่อ</label>
+                                <input
+                                    type="name"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="YourName"
+                                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-yellow-400"
+                                    required
+                                />
+                            </div>
                             <div>
                                 <label className="block text-left text-gray-700 mb-1">อีเมล</label>
                                 <input

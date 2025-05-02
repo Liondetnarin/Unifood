@@ -41,4 +41,23 @@ public class AuthController {
         System.out.println("Login success");
         return ResponseEntity.ok(user);
     }
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody User newUser) {
+        System.out.println("Registering user: " + newUser.getEmail());
+
+        Optional<User> existingUser = userRepository.findByEmail(newUser.getEmail());
+
+        if (existingUser.isPresent()) {
+            System.out.println("Email already in use: " + newUser.getEmail());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("อีเมลนี้ถูกใช้ไปแล้ว");
+        }
+
+        //เพิ่มการเข้ารหัสรหัสผ่าน
+        //newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+
+        userRepository.save(newUser);
+        System.out.println("Register success: " + newUser.getEmail());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+    }
 }
