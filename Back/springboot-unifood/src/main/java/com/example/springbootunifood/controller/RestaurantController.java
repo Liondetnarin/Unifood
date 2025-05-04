@@ -117,6 +117,7 @@ public class RestaurantController {
         restaurantRepository.deleteById(id);
     }
 
+    // Search
     @GetMapping("/search")
     public List<Restaurants> searchRestaurants(@RequestParam("query") String query) {
         return restaurantRepository.findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCaseOrDescriptionContainingIgnoreCase(query, query, query);

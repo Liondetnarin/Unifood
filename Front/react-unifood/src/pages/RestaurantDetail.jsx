@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import StarRating from "../components/StarRating";
+import { FaStar } from 'react-icons/fa';
 import { Star } from "lucide-react";
 import ReadOnlyStars from "../components/ReadOnlyStars";
 
@@ -141,7 +142,7 @@ function RestaurantDetail() {
     <div className="min-h-screen w-full bg-gradient-to-b from-yellow-100 to-yellow-100 p-6">
       <div className="max-w-3xl mx-auto bg-white shadow-xl rounded-2xl p-6">
         <h1 className="text-3xl font-bold text-center text-yellow-600">{restaurant.name}</h1>
-        <p className="text-gray-600 text-center mb-4">{restaurant.category} · {restaurant.location}</p>
+        <p className="text-gray-600 text-center mb-4">{restaurant.category} · Location {restaurant.location}</p>
 
         {restaurant.image && (
           <img
@@ -150,12 +151,21 @@ function RestaurantDetail() {
             className="w-full h-72 object-cover rounded-xl shadow-md"
           />
         )}
+        
+        <div className="flex items-center space-x-2 mt-1">
 
+          <span className="flex items-center bg-red-800 text-white text-sm font-bold px-2 py-0.5 rounded-lg">
+            {restaurant.averageRating.toFixed(1)} <FaStar className="text-white w-3 h-3 ml-1" />
+          </span>
+
+          <span className="text-gray-500 text-sm"> ({restaurant.reviewsCount} รีวิว) </span>
+        </div>
+        
         {restaurant.description && (
           <p className="mt-4 text-gray-800 leading-relaxed">{restaurant.description}</p>
         )}
 
-        <div className="flex justify-center mt-6">
+        <div className="flex justify-left mt-6 ">
           <button
             onClick={() => setShowForm(!showForm)}
             className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-xl font-medium shadow-md transition"

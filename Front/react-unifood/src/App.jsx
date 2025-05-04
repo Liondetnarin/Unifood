@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
+import { FaStar } from 'react-icons/fa';
 import { Icon, Menu, X, Edit } from "lucide-react";
 
 function App() {
@@ -41,7 +42,7 @@ function App() {
 
   const goHome = () => {
     navigate("/");
-    window.location.reload();
+    window.location.reload(); // refresh
   };
 
   // สร้าง state สำหรับการค้นหา
@@ -68,7 +69,6 @@ function App() {
         setRestaurants([]); // ป้องกัน .sort() error
       });
   };
-
 
   // ฟังก์ชันสำหรับแสดงหมวดหมู่ร้านอาหารใน Swiper
   const renderSwiperSection = (category, displayName) => {
@@ -121,7 +121,16 @@ function App() {
                     )}
                     <h2 className="text-lg font-semibold mb-1">{r.name}</h2>
                     <p className="text-sm text-gray-600 mb-1">{r.category} · {r.location}</p>
-                    <p className="text-sm mb-2">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
+
+                    <div className="flex items-center space-x-2 mt-1">
+
+                      <span className="flex items-center bg-red-800 text-white text-sm font-bold px-2 py-0.5 rounded-lg">
+                        {r.averageRating.toFixed(1)} <FaStar className="text-white w-3 h-3 ml-1" />
+                      </span>
+
+                      <span className="text-gray-500 text-sm"> ({r.reviewsCount} รีวิว) </span>
+                    </div>
+                    
                     {renderAdminButtons_FixAndDelete(r.id)}
                   </div>
                 </SwiperSlide>
@@ -144,7 +153,14 @@ function App() {
                   )}
                   <h2 className="text-lg font-semibold mb-1">{r.name}</h2>
                   <p className="text-sm text-gray-600 mb-1">{r.category} · {r.location}</p>
-                  <p className="text-sm mb-2">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
+                  <div className="flex items-center space-x-2 mt-1">
+
+                    <span className="flex items-center bg-red-800 text-white text-sm font-bold px-2 py-0.5 rounded-lg">
+                      {r.averageRating.toFixed(1)} <FaStar className="text-white w-3 h-3 ml-1" />
+                    </span>
+
+                    <span className="text-gray-500 text-sm"> ({r.reviewsCount} รีวิว) </span>
+                  </div>
                   {renderAdminButtons_FixAndDelete(r.id)}
                 </div>
               ))}
@@ -259,7 +275,7 @@ function App() {
 
     <div className="min-h-screen w-full bg-yellow-50 p-6">
 
-      <nav className="mb-8 bg-yellow-400 shadow-md p-4 mb-6 rounded-lg">
+      <nav className="mb-8 bg-yellow-400 shadow-md p-4 rounded-lg">
 
         <div className="flex justify-between items-center max-w-8xl mx-auto">
 
@@ -396,7 +412,7 @@ function App() {
 
       {restaurants.length === 0 ? (
 
-        <p className="text-center text-gray-500">No restaurant information</p>
+        <p></p>
       ) : (
         <div className="max-w-6xl mx-auto">
 
@@ -428,7 +444,15 @@ function App() {
 
                   <h2 className="text-lg font-semibold mb-1">{r.name}</h2>
                   <p className="text-sm text-gray-600 mb-1">{r.category} · {r.location}</p>
-                  <p className="text-sm mb-2">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
+
+                  <div className="flex items-center space-x-2 mt-1">
+                  
+                    <span className="flex items-center bg-red-800 text-white text-sm font-bold px-2 py-0.5 rounded-lg">
+                      {r.averageRating.toFixed(1)} <FaStar className="text-white w-3 h-3 ml-1" />
+                    </span>
+          
+                    <span className="text-gray-500 text-sm"> ({r.reviewsCount} รีวิว) </span>
+                  </div>
 
                   {renderAdminButtons_FixAndDelete(r.id)}
                 </div>
@@ -473,7 +497,15 @@ function App() {
 
                   <h2 className="text-lg font-semibold mb-1">{r.name}</h2>
                   <p className="text-sm text-gray-600">{r.category} · {r.location}</p>
-                  <p className="text-sm mb-1">⭐ {r.averageRating} ({r.reviewsCount} รีวิว)</p>
+
+                  <div className="flex items-center space-x-2 mt-1">
+
+                    <span className="flex items-center bg-red-800 text-white text-sm font-bold px-2 py-0.5 rounded-lg">
+                      {r.averageRating.toFixed(1)} <FaStar className="text-white w-3 h-3 ml-1" />
+                    </span>
+
+                    <span className="text-gray-500 text-sm"> ({r.reviewsCount} รีวิว) </span>
+                  </div>
 
                   {renderAdminButtons_FixAndDelete(r.id)}
 
