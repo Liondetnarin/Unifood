@@ -1,6 +1,6 @@
 // components/StarRating.jsx
 import { useState } from "react";
-import { Star } from "lucide-react"; // ใช้ไอคอนจาก lucide-react (หรือจะใช้ emoji ก็ได้)
+import { Star } from "lucide-react"; // ใช้ไอคอนจาก lucide-react
 
 function StarRating({ rating, onChange }) {
   const [hovered, setHovered] = useState(null); // สำหรับ hover effect
@@ -14,9 +14,8 @@ function StarRating({ rating, onChange }) {
           onMouseEnter={() => setHovered(val)}
           onMouseLeave={() => setHovered(null)}
           onClick={() => onChange(val)}
-          className={`cursor-pointer transition ${
-            (hovered || rating) >= val ? "text-yellow-400" : "text-gray-300"
-          }`}
+          className={`cursor-pointer transition ${(hovered || rating) >= val ? "text-yellow-400" : "text-gray-300"
+            }`}
           fill={(hovered || rating) >= val ? "currentColor" : "none"}
         />
       ))}

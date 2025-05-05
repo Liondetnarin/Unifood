@@ -13,7 +13,7 @@ function AdminEditRestaurant() {
     image: "",
   });
 
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFile, setImageFile] = useState(null); // เก็บไฟล์รูปภาพที่ผู้ใช้อัปโหลดใหม่
 
   const handleChange = (e) => {
     setRestaurant({ ...restaurant, [e.target.name]: e.target.value });
@@ -70,7 +70,7 @@ function AdminEditRestaurant() {
   };
 
   const handleCancel = (e) => {
-    if (!window.confirm("ยืนยันการยกเลิก? \nระบบจะพาคุณไปสู่หน้าหลัก")) return;
+    if (!window.confirm("ยืนยันการยกเลิก? \ระบบจะพาคุณไปสู่หน้าหลัก")) return;
     e.preventDefault();
     navigate("/");
   };
