@@ -163,7 +163,7 @@ public class ReviewController {
         double finalAverage = totalAvg / approvedReviews.size();
 
         restaurantRepository.findById(restaurantId).ifPresent(restaurant -> {
-            restaurant.setAverageRating(Math.round(finalAverage * 10.0));
+            restaurant.setAverageRating(Math.round(finalAverage));
             restaurant.setReviewsCount(approvedReviews.size());
             restaurantRepository.save(restaurant);
         });
