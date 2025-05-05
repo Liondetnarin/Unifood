@@ -21,8 +21,8 @@ public class ReviewController {
 
     @Autowired
     private UserRepository userRepository;
-    private RestaurantRepository restaurantRepository;
 
+    private final RestaurantRepository restaurantRepository;
     private final ReviewRepository reviewRepository;
 
     public ReviewController(ReviewRepository reviewRepository, RestaurantRepository restaurantRepository) {
@@ -56,15 +56,15 @@ public class ReviewController {
                     .body("พบคำไม่สุภาพ กรุณาแก้ไขก่อนส่งรีวิว");
         }
 
+        // ตั้งสถานะเริ่มต้นเป็น pending (รอแอดมินอนุมัติ)
         review.setStatus("pending");
 
+        // ดึงชื่อผู้ใช้จาก userId
         userRepository.findById(review.getUserId()).ifPresent(user -> {
             review.setUserName(user.getName());
         });
 
         Reviews saved = reviewRepository.save(review);
-
-
         return ResponseEntity.ok(saved);
     }
 
@@ -86,7 +86,7 @@ public class ReviewController {
         return ResponseEntity.ok("Review deleted");
     }
 
-    //
+    // แก้ไขรีวิวของตัวเอง
     @PutMapping("/{id}")
     public ResponseEntity<?> updateReview(@PathVariable String id, @RequestBody Reviews updatedReview) {
         return reviewRepository.findById(id).map(existing -> {
@@ -104,7 +104,7 @@ public class ReviewController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
-    //
+    // แอดมินอนุมัติรีวิว
     @PutMapping("/admin/approve/{id}")
     public ResponseEntity<?> approveReview(@PathVariable String id) {
         Optional<Reviews> reviewOpt = reviewRepository.findById(id);
@@ -120,7 +120,7 @@ public class ReviewController {
         }
     }
 
-    //
+    // แอดมินลบรีวิว
     @DeleteMapping("/admin/{id}")
     public ResponseEntity<?> deleteReviewByAdmin(@PathVariable String id) {
         Optional<Reviews> reviewOpt = reviewRepository.findById(id);
@@ -142,6 +142,7 @@ public class ReviewController {
     private void updateRestaurantAverage(String restaurantId) {
         List<Reviews> approvedReviews = reviewRepository.findByRestaurantIdAndStatus(restaurantId, "approved");
 
+        // ถ้าไม่มีรีวิว
         if (approvedReviews.isEmpty()) {
             restaurantRepository.findById(restaurantId).ifPresent(restaurant -> {
                 restaurant.setAverageRating(0.0);
@@ -151,6 +152,7 @@ public class ReviewController {
             return;
         }
 
+        // คำนวณคะแนนเฉลี่ย
         double totalAvg = 0.0;
 
         for (Reviews r : approvedReviews) {

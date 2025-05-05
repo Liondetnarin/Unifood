@@ -61,10 +61,11 @@ public class RestaurantController {
             restaurant.setCategory(category);
             restaurant.setDescription(description);
             restaurant.setLocation(location);
-            restaurant.setImage("/uploads/" + filename); // เก็บ path
+            restaurant.setImage("/uploads/" + filename); // เก็บ path ของไฟล์
             restaurant.setAverageRating(0.0);
             restaurant.setReviewsCount(0);
 
+            // บันทึกลงฐานข้อมูล
             restaurantRepository.save(restaurant);
 
             return ResponseEntity.ok(restaurant);
@@ -74,7 +75,7 @@ public class RestaurantController {
         }
     }
 
-    // แก้ไขร้านอาหาร
+    // แก้ไขร้านอาหารตาม ID
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRestaurant(
             @PathVariable String id,
@@ -85,9 +86,12 @@ public class RestaurantController {
             @RequestParam(value = "image", required = false) MultipartFile imageFile
     ) {
         try {
+
+            // หา restaurant จาก ID
             Restaurants restaurant = restaurantRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("ไม่พบร้าน"));
 
+            // อัปเดตค่า
             restaurant.setName(name);
             restaurant.setCategory(category);
             restaurant.setDescription(description);
@@ -103,6 +107,7 @@ public class RestaurantController {
                 restaurant.setImage("/uploads/" + filename); // อัปเดต path รูปใหม่
             }
 
+            // บันทึกการเปลี่ยนแปลง
             restaurantRepository.save(restaurant);
             return ResponseEntity.ok(restaurant);
 

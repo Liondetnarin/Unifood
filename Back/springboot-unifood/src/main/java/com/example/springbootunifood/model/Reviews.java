@@ -26,5 +26,5 @@ public class Reviews {
     private String userName;            // ชื่อ
     private String comment;             // ข้อความรีวิว
     private LocalDateTime createdAt;    // เวลาที่โพสต์
-    private String status;              // approved / rejected
+    private String status;              // approved / pending
 }
