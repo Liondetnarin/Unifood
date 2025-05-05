@@ -59,6 +59,7 @@ function AdminReviewApproval() {
   };
 
   return (
+
     <div className="min-h-screen bg-gradient-to-tr from-yellow-50 via-yellow-50 to-yellow-100 py-10 px-4">
       <div className="max-w-4xl mx-auto">
         <h2 className="text-3xl font-bold text-center text-yellow-600 mb-8">
